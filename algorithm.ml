@@ -1,3 +1,4 @@
+(* generic interface for fountain code generation *)
 module type FTN_CODE =
 sig
     (* kind of file being input *)
