@@ -5,6 +5,10 @@ CS 51 Final Project: Fountain Codes
 These are implementations of fountain code algorithms written in OCaml.
 Implemented algorithms will include Luby transform (LT) codes and Tornado codes.
 
+********************************************************************************
+
+File Manifest
+TODO
 
 Configuration
 TODO
@@ -12,7 +16,10 @@ TODO
 Operating Instructions
 TODO
 
-File Manifest
+Known Bugs
+TODO
+
+Troubleshooting
 TODO
 
 Contact Information
@@ -20,9 +27,3 @@ Contact Information
     Vipul Shekhawat:
     Danny Broudy
     Peregrine Badger:
-
-Known Bugs
-TODO
-
-Troubleshooting
-TODO
