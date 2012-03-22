@@ -18,30 +18,30 @@ end
 module LTCode : (FTN_CODE with type chunk = TODO) =
 struct
     (* LT chunk type *)
-    type chunk =
+    type chunk = TODO
 
     (* LT encoding function *)
-    let encode =
+    let encode = TODO
 
     (* LT decoding function *)
-    let decode =
+    let decode = TODO
 
     (* LT stream generation *)
-    let gen_stream =
+    let gen_stream = TODO
 end
 
 (* Tornado structure *)
 module TornadoCode : (FTN_CODE with type chunk = TODO) =
 struct
     (* Torndao chunk type *)
-    type chunk = 
+    type chunk = TODO
     
     (* Tornado encoding function *)
-    let encode = 
+    let encode = TODO 
     
     (* Tornado decoding function *)    
-    let decode = 
+    let decode = TODO 
 
     (* Tornado stream generation *)
-    let gen_stream =
+    let gen_stream = TODO
 end
