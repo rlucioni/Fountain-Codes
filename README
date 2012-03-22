@@ -8,7 +8,8 @@ Implemented algorithms will include Luby transform (LT) codes and Tornado codes.
 ********************************************************************************
 
 File Manifest
-TODO
+    algorithm.ml - contains generic interface (signature) for module generation,
+                   LT and Tornado specific structures
 
 Configuration
 TODO
