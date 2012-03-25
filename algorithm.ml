@@ -21,7 +21,7 @@ sig
     (* decoding algorithm; takes list as argument and returns a tuple 
        containing the decoded file in list form, along with an int showing
        difference between total packets in file and packets used to decode *)
-    val list_decode : list -> (stream * int)
+    val list_decode : stream -> (stream * int)
     
     (* encoding algorithm that opens a file and streams packets into 
        directory *)
