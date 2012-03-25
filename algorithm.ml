@@ -3,10 +3,10 @@ module type FTN_CODE =
 sig
     exception TODO
 
-    (* kind of file being input *)
+    (* a piece of a file that may or may not be encoded *)
     type packet
     
-    (* defining *)
+    (* a collection of packets with metadata about the packets' origins *)
     type stream
 
     (* seeds packet_confirmation below with universal value for easy testing *)
