@@ -1,14 +1,32 @@
+open Droplet
+
 (* a Goblet, used to collect Droplets and reconstruct the original data *)
-class type goblet =
+class type goblet total =
 object
-    (*This function generates a new droplet from the stream of droplets*)
-    method add_droplet: unit
+    (* data structure representing the part of the message we have decoded so
+     * far *)
+    val mutable message
 
-    (*Gets the string from the droplet*)
-    method get_string: 
+    (* number that shows how much of the file we have decoded, in pieces *)
+    val mutable counter
 
+    (* total number of pieces in the original file *)
     val mutable total_pieces
 
-    (*Calls to diff classes*)
-    val mutable droplets 
+    (* this function generates a new droplet from the stream of droplets*)
+    method get_droplet: unit
+
+    (* takes a droplet as an argument, decodes if possible, updating message
+     * with decoded content if applicable *)
+    method decode: unit
+
+    (* return however much we have decoded of the original message *)
+    method get_message
+
+    (* prints counter and total pieces for debugging *)
+    method print_progress: unit
+
+    (* compares counter and total_pieces, checking to see if we are done
+     * decoding (i.e., counter = total_pieces) *)
+    method check_complete: bool
 end

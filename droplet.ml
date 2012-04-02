@@ -1,13 +1,13 @@
 (* the Droplet, containing a seed and the XOR'd data *)
 class type droplet data total seed =
 object
-    (* a few chunks of the file encoded together *)
+    (* a few pieces of the file encoded together *)
     val mutable data
     
-    (* total number of chunks in file *)
+    (* total number of pieces in file *)
     val mutable total_pieces
     
-    (* pseduorandomly generated seed for telling which chunks were used *)
+    (* pseduorandomly generated seed for telling which pieces were used *)
     val mutable seed
     
     (* this prints the data, total_pieces, and seed *)

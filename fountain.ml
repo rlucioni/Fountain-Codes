@@ -37,5 +37,4 @@ object
     (* this generates a new random droplet object, using the above 
        methods and instance variables *)
     method output_droplet
-
 end
