@@ -8,14 +8,15 @@ Implemented algorithms will include Luby transform (LT) codes and Tornado codes.
 ********************************************************************************
 
 File Manifest
-    algorithm.ml - contains generic interface (signature) for module generation,
-                   LT and Tornado specific structures
+    goblet.ml   - defines a Cup, used to collect Droplets and reconstruct the 
+                  original data. This takes a droplet (seed, the data to be 
+                  decoded, and the total number of pieces)
 
-    goblet.ml - (* defines a Cup, used to collect Droplets and reconstruct the original data. This takes a droplet {seed, the data to be decoded, and the total number of pieces} *)
-
-    fountain.ml - (* defines the Fountain, produces Droplets according to the fountain code implementation chosen *)
+    fountain.ml - defines the Fountain, produces Droplets according to the 
+                  fountain code implementation chosen
  
-    droplet.ml - (* defines the Droplet, containing a seed, the XOR'd data, and the total number of pieces*)
+    droplet.ml  - defines the Droplet, containing a seed, the XOR'd data, and 
+                  the total number of pieces
 	
 
 Configuration
@@ -31,7 +32,7 @@ Troubleshooting
 TODO
 
 Contact Information
-    Renzo Lucioni: renzolucioni@gmail.com
-    Vipul Shekhawat: vish092@gmail.com
-    Danny Broudy: daniel.broudy@gmail.com
-    Peregrine Badger:
+    Renzo Lucioni   : renzolucioni@gmail.com
+    Vipul Shekhawat : vish092@gmail.com
+    Danny Broudy    : daniel.broudy@gmail.com
+    Peregrine Badger: pbadger@college.harvard.edu
