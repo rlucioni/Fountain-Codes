@@ -58,7 +58,6 @@ object (this)
     
     method get_piece         = int_of_char data.[int total_pieces]
 
-    (* causes stack overflow for some reason, still needs to be debugged *)
     method xor               =
       let rec help_xor (n:int) : int =
 	if n > 0 then
