@@ -59,12 +59,12 @@ object (this)
     method get_piece         = init seed; int_of_char data.[int total_pieces]
 
     method xor               = this#random_seed; this#random_howmany;
-      let rec help_xor (n:int) : int =
-	if n > 1 then
-	    (lxor) (this#get_piece) (help_xor n-1)
-	else this#get_piece
-      in
-      help_xor how_many
+        let rec help_xor (n:int) : int =
+	        if n > 1 
+                then (lxor) (this#get_piece) (help_xor n-1)
+	            else this#get_piece
+        in
+        help_xor how_many
 
     method output_droplet    = this#random_seed; this#random_howmany;
                                new lt_droplet (char_of_int this#xor) 
