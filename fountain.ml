@@ -52,15 +52,16 @@ object (this)
     val mutable seed         = self_init(); bits ()
     val mutable how_many     = 0
 
-    method random_seed       = self_init(); seed <- bits ()
+    method random_seed       = self_init(); seed <- bits (); init seed
     
-    method random_howmany    = init seed; how_many <- int bound
+    method random_howmany    = how_many <- int bound
     
-    method get_piece         = init seed; int_of_char data.[int total_pieces]
+    method get_piece         = int_of_char data.[int total_pieces]
 
-    method xor               = this#random_seed; this#random_howmany;
+    (* causes stack overflow for some reason, still needs to be debugged *)
+    method xor               =
       let rec help_xor (n:int) : int =
-	if n > 1 then
+	if n >= 0 then
 	    (lxor) (this#get_piece) (help_xor n-1)
 	else this#get_piece
       in
