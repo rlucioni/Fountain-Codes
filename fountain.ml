@@ -49,19 +49,20 @@ object (this)
     val mutable data         = d
     val mutable piece_size   = ps
     val mutable total_pieces = (String.length d) / ps
-    val mutable seed         = self_init(); bits ()
+    val mutable seed         = bits ()
     val mutable how_many     = 0
 
-    method random_seed       = self_init(); seed <- bits ()
+    method random_seed       = seed <- bits (); init seed
     
-    method random_howmany    = init seed; how_many <- int bound
+    method random_howmany    = how_many <- int bound
     
-    method get_piece         = init seed; int_of_char data.[int total_pieces]
+    method get_piece         = int_of_char data.[int total_pieces]
 
+<<<<<<< HEAD
     method xor               = this#random_seed; this#random_howmany;
         let rec help_xor (n:int) : int =
-	        if n > 1 
-                then (lxor) (this#get_piece) (help_xor n-1)
+	        if (n > 0) 
+                then ((lxor) (this#get_piece) (help_xor n-1))
 	            else this#get_piece
         in
         help_xor how_many
