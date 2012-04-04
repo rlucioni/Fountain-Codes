@@ -21,16 +21,15 @@ object
        each XOR'd droplet *)
     val mutable seed : int
     
-    (* for the generated droplet, how many pieces of the
-       original file are we using to XOR? *)
-    val mutable how_many : int
+    (* number of pieces of the original file to be XOR'd in the new droplet *)
+    val mutable droplet_pieces : int
     
     (* this creates a new random seed to generate new droplets *)
     method random_seed : unit
 
     (* this uses the seed to come up with a new random number of
        pieces being encoded in the next droplet *)
-    method random_howmany : unit
+    method rand_droplet_pieces : unit
 
     (* this uses the seed and data variables to fetch a random
        piece of the original file *)
@@ -46,27 +45,28 @@ end
 
 class lt_fountain (d: string) (ps: int) (bound : int) : fountain =
 object (this)
-    val mutable data         = d
-    val mutable piece_size   = ps
-    val mutable total_pieces = (String.length d) / ps
-    val mutable seed         = bits ()
-    val mutable how_many     = 0
+    val mutable data           = d
+    val mutable piece_size     = ps
+    val mutable total_pieces   = (String.length d) / ps
+    val mutable seed           = bits ()
+    val mutable droplet_pieces = 0
 
-    method random_seed       = seed <- bits (); init seed
+    method random_seed         = seed <- bits (); init seed
     
-    method random_howmany    = how_many <- int bound
+    method rand_droplet_pieces = droplet_pieces <- int bound
     
-    method get_piece         = int_of_char data.[int total_pieces]
+    method get_piece           = int_of_char data.[int total_pieces]
 
-    method xor               = this#random_seed; this#random_howmany;
+    method xor                 = this#random_seed; this#rand_droplet_pieces;
         let rec help_xor (n:int) : int =
-	        if (n > 0) 
+	        if (n > 1) 
                 then ((lxor) (this#get_piece) (help_xor n-1))
 	            else this#get_piece
         in
-        help_xor how_many
+        (* do we need to pass rand_droplet_pieces? *)
+        help_xor droplet_pieces
 
-    method output_droplet    = this#random_seed; this#random_howmany;
+    method output_droplet    = this#random_seed; this#rand_droplet_pieces;
                                new lt_droplet (char_of_int this#xor) 
                                              (total_pieces)
                                              (seed)
