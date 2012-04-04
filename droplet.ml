@@ -1,3 +1,5 @@
+type droplet_record = {data : char; total_pieces : int; seed : int}
+
 (* the Droplet, containing a seed and the XOR'd data *)
 class type droplet =
 object
@@ -14,7 +16,7 @@ object
     method to_string : string
                                  
     (* returns a tuple with data, total_pieces, and seed for use in goblet *)
-    method get_contents : char * int * int
+    method get_contents : droplet_record
 end
 
 
@@ -31,5 +33,5 @@ object
         ", Total pieces: " ^ (string_of_int total_pieces) ^ ", Seed: " ^
         (string_of_int seed) ^ "}"
                                                                     
-    method get_contents = (data, total_pieces, seed)
+    method get_contents = {data = data; total_pieces = total_pieces; seed = seed}
 end

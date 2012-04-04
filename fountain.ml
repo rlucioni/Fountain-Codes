@@ -53,7 +53,7 @@ object (this)
 
     method random_seed         = seed <- bits (); init seed
     
-    method rand_droplet_pieces = droplet_pieces <- int bound
+    method rand_droplet_pieces = droplet_pieces <- (int bound) + 1
     
     method get_piece           = int_of_char data.[int total_pieces]
 
@@ -63,7 +63,6 @@ object (this)
                 then ((lxor) (this#get_piece) (help_xor (n-1)))
 	            else this#get_piece
         in
-        (* do we need to call rand_droplet_pieces first? *)
         help_xor droplet_pieces
 
     method output_droplet    = this#random_seed; this#rand_droplet_pieces;
