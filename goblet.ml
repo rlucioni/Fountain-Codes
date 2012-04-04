@@ -32,7 +32,7 @@ object
 end
 
 
-class LTgoblet (d: droplet) : goblet =
+class lt_goblet (d: droplet) : goblet =
 object
     val mutable total_pieces = let (_,tp,_) = d in tp 
     val mutable message = 

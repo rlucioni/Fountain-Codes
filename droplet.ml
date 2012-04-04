@@ -2,7 +2,7 @@
 class type droplet =
 object
     (* a few pieces of the file encoded together *)
-    val mutable data : int list
+    val mutable data : char
              
     (* total number of pieces in file *)
     val mutable total_pieces : int
@@ -14,11 +14,11 @@ object
     method to_string : string
                                  
     (* returns a tuple with data, total_pieces, and seed for use in goblet *)
-    method get_contents : int list * int * int
+    method get_contents : char * int * int
 end
 
 
-class LTdroplet (d: int list) (t: int) (s: int) : droplet =
+class lt_droplet (d: char) (t: int) (s: int) : droplet =
 object
     val mutable data         = d
     val mutable total_pieces = t
@@ -26,7 +26,8 @@ object
                         
     (* still need to implement printing for testing *)
     method to_string : string =
-        "{Data :" ^ (String.concat "" (List.map (string_of_int data))) ^ 
+        "{Data :" ^ (Char.escaped data)
+(*(String.concat "" (List.map (string_of_int data)))*) ^ 
         ", Total pieces: " ^ (string_of_int total_pieces) ^ ", Seed: " ^
         (string_of_int seed) ^ "}"
                                                                     
