@@ -49,10 +49,10 @@ object (this)
     val mutable data         = d
     val mutable piece_size   = ps
     val mutable total_pieces = (String.length d) / ps
-    val mutable seed         = self_init(); bits ()
+    val mutable seed         = bits ()
     val mutable how_many     = 0
 
-    method random_seed       = self_init(); seed <- bits (); init seed
+    method random_seed       = seed <- bits (); init seed
     
     method random_howmany    = how_many <- int bound
     
