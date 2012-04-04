@@ -1,7 +1,7 @@
 open Droplet
 
 (* a Goblet, used to collect Droplets and reconstruct the original data *)
-class type goblet total =
+class type goblet =
 object
     (* data structure representing the part of the message we have decoded so
      * far *)

@@ -1,8 +1,9 @@
-open Droplet
+open Random;;
+open Droplet;;
 
 (* the fountain produces droplets according to the fountain code 
  * implementation chosen *)
-class type fountain data size =
+class type fountain =
 object
   
     (* the total data (file) being transferred *)
@@ -37,4 +38,25 @@ object
     (* this generates a new random droplet object, using the above 
        methods and instance variables *)
     method output_droplet
+end
+
+
+class LTfountain : fountain (d: string) (ps: int) (bound : int) =
+object
+    val mutable data         = d
+    val mutable piece_size   = ps
+    val mutable total_pieces = (String.length data) / piece_size
+    val mutable seed         = self_init; bits ()
+    val mutable how_many     = init seed; int bound
+
+    method random_seed       = self_init; seed <- bits ()
+    
+    method random_howmany    = init seed; how_many <- int bound
+    
+    method get_piece         = init seed; let index = data.[int total_pieces]
+
+    method output_droplet    = random_seed; random_howmany;
+                               new LTdroplet (get_piece data) 
+                                             (total_pieces)
+                                             (seed)
 end

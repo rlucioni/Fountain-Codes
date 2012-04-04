@@ -1,7 +1,5 @@
-open Printf
-
 (* the Droplet, containing a seed and the XOR'd data *)
-class type droplet (d: int list) (t: int) (s: int) =
+class type droplet =
 object
     (* a few pieces of the file encoded together *)
     val mutable data : int list
@@ -22,9 +20,9 @@ end
 
 class LTdroplet : droplet (d: int list) (t: int) (s: int) =
 object
-    val mutable data = d
+    val mutable data         = d
     val mutable total_pieces = t
-    val mutable seed = s
+    val mutable seed         = s
                         
     (* still need to implement printing for testing *)
     method to_string : string =
