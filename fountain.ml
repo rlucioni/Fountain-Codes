@@ -61,8 +61,8 @@ object (this)
     (* causes stack overflow for some reason, still needs to be debugged *)
     method xor               =
       let rec help_xor (n:int) : int =
-	if n >= 0 then
-	    (lxor) (this#get_piece) (help_xor n-1)
+	if n > 0 then
+	    (lxor) (this#get_piece) (help_xor (n-1))
 	else this#get_piece
       in
       help_xor how_many
