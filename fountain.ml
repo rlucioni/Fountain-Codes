@@ -1,5 +1,5 @@
 open Random;;
-open Droplet;;
+(* open Droplet;; *)
 
 (* the fountain produces droplets according to the fountain code 
  * implementation chosen *)
@@ -60,10 +60,10 @@ object (this)
     method xor                 = this#random_seed; this#rand_droplet_pieces;
         let rec help_xor (n:int) : int =
 	        if (n > 1) 
-                then ((lxor) (this#get_piece) (help_xor n-1))
+                then ((lxor) (this#get_piece) (help_xor (n-1)))
 	            else this#get_piece
         in
-        (* do we need to pass rand_droplet_pieces? *)
+        (* do we need to call rand_droplet_pieces first? *)
         help_xor droplet_pieces
 
     method output_droplet    = this#random_seed; this#rand_droplet_pieces;
