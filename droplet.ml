@@ -18,7 +18,7 @@ object
 end
 
 
-class LTdroplet : droplet (d: int list) (t: int) (s: int) =
+class LTdroplet (d: int list) (t: int) (s: int) : droplet =
 object
     val mutable data         = d
     val mutable total_pieces = t

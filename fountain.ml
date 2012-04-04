@@ -41,7 +41,7 @@ object
 end
 
 
-class LTfountain : fountain (d: string) (ps: int) (bound : int) =
+class LTfountain (d: string) (ps: int) (bound : int) : fountain =
 object
     val mutable data         = d
     val mutable piece_size   = ps
