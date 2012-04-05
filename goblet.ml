@@ -1,4 +1,4 @@
-open Droplet
+open Droplet 
 
  (* This is a type for metadrop which is a droplet that had its seed decoded into metadata
   * number_chunks is how many chunks went into the droplet
@@ -37,6 +37,11 @@ object
     method check_complete: bool
 end
 
+(*
+ * just doing chars right now 
+ *  total pieces is string length 
+
+*)
 
 class lt_goblet (d: droplet) : goblet =
 object
