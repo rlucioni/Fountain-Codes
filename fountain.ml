@@ -55,6 +55,7 @@ object (this)
     
     method rand_droplet_pieces = droplet_pieces <- (int bound) + 1
     
+    (* we may be able to abstract this out to create different distributions *)
     method get_piece           = int_of_char data.[int total_pieces]
 
     method xor                 = this#random_seed; this#rand_droplet_pieces;
