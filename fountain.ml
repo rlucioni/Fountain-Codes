@@ -58,7 +58,8 @@ object (this)
     (* we may be able to abstract this out to create different distributions *)
     method get_piece           = int_of_char data.[int total_pieces]
 
-    method xor                 =(* this#random_seed; this#rand_droplet_pieces; we think this isn't needed *)
+    method xor                 = (* this#random_seed; this#rand_droplet_pieces; 
+                                    we think this isn't needed *)
         let rec help_xor (n:int) : int =
 	        if (n > 1) 
                 then ((lxor) (this#get_piece) (help_xor (n-1)))
@@ -68,6 +69,6 @@ object (this)
 
     method output_droplet    = this#random_seed; this#rand_droplet_pieces;
                                new lt_droplet (char_of_int this#xor) 
-                                             (total_pieces)
-                                             (seed)
+                                              (total_pieces)
+                                              (seed)
 end
