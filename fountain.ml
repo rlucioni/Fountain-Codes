@@ -1,5 +1,5 @@
 open Random;;
-open Droplet;;
+(* open Droplet;; *)
 
 (* the fountain produces droplets according to the fountain code 
  * implementation chosen *)
@@ -35,7 +35,7 @@ object
        piece of the original file *)
     method get_piece : int
 
-    method xor : int
+    method private xor : int
 
     (* this generates a new random droplet object, using the above 
        methods and instance variables *)
@@ -58,8 +58,8 @@ object (this)
     (* we may be able to abstract this out to create different distributions *)
     method get_piece           = int_of_char data.[int total_pieces]
 
-    method xor                 = (* this#random_seed; this#rand_droplet_pieces; 
-                                    we think this isn't needed *)
+    (* not a public method *)
+    method private xor         =
         let rec help_xor (n:int) : int =
 	        if (n > 1) 
                 then ((lxor) (this#get_piece) (help_xor (n-1)))
