@@ -15,7 +15,7 @@ object
     (* this converts the data, total_pieces, and seed into a string *)
     method to_string : string
                                  
-    (* returns a tuple with data, total_pieces, and seed for use in goblet *)
+    (* returns record with data, total_pieces, and seed for use in goblet *)
     method get_contents : droplet_record
 end
 
