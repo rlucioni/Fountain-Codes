@@ -3,6 +3,10 @@ open Random
 exception Done
 
 (*
+i should preface these comments with a TLDR tag
+i wrote this out on the shuttle to get be back into it and 
+clarify my thinking.
+
 the plan: given an int list list figure out the simplest
  int list from xoring elements in the int list. empty list
  doesn't count
@@ -34,7 +38,7 @@ pieces of data with one contributior.
 to solve a metadrop list you first list_lst_fixer then you
  remove all singletons by knockout_through
 
-you then call wimplify_list and see if you get out a metadrop thats a singleton 
+you then call simplify_list and see if you get out a metadrop thats a singleton 
 meaning a metadrop that is made of only one piece
 
 if this is the case you add the singleton to the solved pieces and add its data to the message
@@ -181,17 +185,18 @@ call list_lst_fixer...
 
 *)
 let int_list_to_string (lst: int list) : string = 
-  let rec iltsHelper (lst:int list) : string = 
-     match lst with 
+  let rec intsHelper (lst:int list) : string = 
+    ( match lst with 
        | [] -> ""
-       | hd::tl -> (string_of_int hd)^", "^(iltsHelper tl)
+       | hd::tl -> (string_of_int hd)^", "^(intsHelper tl))
   in "["^ (intsHelper lst) ^"]"
 ;;
 let rec ill_to_string (lstlst: int list list) : string = 
    match lstlst with
      | [] -> ""
-     | hd::tl 
-      
+     | hd::tl -> int_list_to_string hd ^ ill_to_string tl
+;;      
+
 let actor (lstlst: int list list ) : (int list * int list list) = 
    if lstlst = [] then (Printf.printf "all Done"; raise Done) else  
 let a = list_lst_fixer lstlst in 
@@ -204,9 +209,33 @@ let a = list_lst_fixer lstlst in
 
 
 (*
-let rec solver2 (lstlst: int list list) = 
- Printf.printf "prepping the list "
-  *)
+ *
+ *)
+let rec SinglesKnockout (solvedSingles: int list list) ( lst_lst: int list list) : int list list = 
+  match solvedSingles with
+    |[] -> lstlst
+    | hd::tl -> let lst = knockout_through hd lst_lst in SinglesKnockout tl lst 
+
+exception NeedMoreInfo
+ 
+(* should return a list of solved singletons
+ should return left over unsolved pieces
+ should return number of new singletons   *)
+let solverB (solvedSingles: int list list) (lst_lst: int list list) : (int list list* int list list * int) =
+  let list2 = SinglesKnockout solvedSingles lst_lst in 
+   let rec solver2 (solvedSingles:int list list) (lstlst: int list list ) (count:int) : (int list list * int list list * int) = 
+  ( if lstlst = [] then (Printf.printf "all Done"); (solvedSingles,[],count) else  
+    let a' = remove_empties (list_lst_fixer lstlst) in  
+    let a_knocker = simplify_list a' in
+   if List.length a_knocker = 1 then 
+    let b = knockout_through a_knocker a' in 
+    let b'' = remove_empties  (list_lst_fixer b) in
+    in solver2 (a_knocker::solvedSingles) (b'') (count +1) 
+ else (solvedSingles,a',count)  )
+
+in solver2 solvedSingles list2 0
+
+
 let int_of_singleton (lst:int list): int = 
    match lst with
      | [] -> -1
