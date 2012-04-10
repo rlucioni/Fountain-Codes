@@ -1,6 +1,7 @@
 (* i need to develop a way to xor int lists to get out individaul ints   *) 
 open Random
 exception Done
+exception TODO
 
 (*
 i should preface these comments with a TLDR tag
@@ -112,6 +113,25 @@ let _ = assert (simplify_list [[1;2;3];[3;5;4;7;8];[1;2;3;4]] = [4])
 
  (* knockout should xor the knocker with the lst if it has something
   * to remove from the lst leave it unchanged otherwise  *)
+
+(* question do i only want to xor if it fully removes the knocker 
+ * or do i want to xor if it makes it shorter...? *)
+let knockout2 (knocker: int list ) (lst: int list) : int list = 
+   if knocker = [] then lst else 
+     let lknock = List.length knocker in
+     let llst = List.length lst in 
+     let xored = int_list_xor knocker lst in 
+  if List.length xored = (llst - lknock) && xored != knocker then 
+   xored else lst
+
+ let knockout_t2 (remover: int list) (lst: int list list) : int list list = 
+  List.map (knockout2 remover) lst
+
+let _ = assert (knockout2 [4] [1;2;3;4] = [1;2;3])
+ let _ = assert (knockout2 [4] [1;2;3;5] = [1;2;3;5])
+ let _ = assert (knockout2 [5;6;1] [1;3;5;4] = [3;4;6])
+
+
  let knockout (knocker:int list) (lst: int list) : int list = 
      if knocker = [] then lst else 
        match knocker with 
@@ -135,7 +155,7 @@ let _ = assert (knockout [2;3] [1;2;4] = [2;3])
 (* because of the noted flaw in knockout this only really works well when the
  * remover is a list of length 1 *)
 
-(* remove the empties int list from an int list list *) 
+(* use to remove the empties int list from an int list list *) 
 let rec remove_empties (lstlst: int list list) : int list list =
      match lstlst with
        |[] -> []
@@ -206,15 +226,19 @@ let a = list_lst_fixer lstlst in
   let b' = list_lst_fixer b in
   let b'' = remove_empties b' in 
   (a_knocker, b'')
-
+;;
 
 (*
  *
  *)
-let rec SinglesKnockout (solvedSingles: int list list) ( lst_lst: int list list) : int list list = 
+
+let rec singlesKnockout (solvedSingles: int list list) (list: int list list) : int list list = 
   match solvedSingles with
-    |[] -> lstlst
-    | hd::tl -> let lst = knockout_through hd lst_lst in SinglesKnockout tl lst 
+    |[] -> list
+    | hd::tl -> let lst = knockout_through hd list in singlesKnockout tl lst 
+;;
+
+assert (singlesKnockout [[1];[2]] [[1;3];[2;5]] = [[3];[5]])
 
 exception NeedMoreInfo
  
@@ -222,18 +246,19 @@ exception NeedMoreInfo
  should return left over unsolved pieces
  should return number of new singletons   *)
 let solverB (solvedSingles: int list list) (lst_lst: int list list) : (int list list* int list list * int) =
-  let list2 = SinglesKnockout solvedSingles lst_lst in 
+  let list2 = singlesKnockout solvedSingles lst_lst in 
    let rec solver2 (solvedSingles:int list list) (lstlst: int list list ) (count:int) : (int list list * int list list * int) = 
-  ( if lstlst = [] then (Printf.printf "all Done"); (solvedSingles,[],count) else  
+ (  if lstlst = [] then  (solvedSingles,[],count) else  
     let a' = remove_empties (list_lst_fixer lstlst) in  
     let a_knocker = simplify_list a' in
    if List.length a_knocker = 1 then 
     let b = knockout_through a_knocker a' in 
-    let b'' = remove_empties  (list_lst_fixer b) in
+    let b'' = remove_empties  (list_lst_fixer b)
     in solver2 (a_knocker::solvedSingles) (b'') (count +1) 
  else (solvedSingles,a',count)  )
 
 in solver2 solvedSingles list2 0
+;;
 
 
 let int_of_singleton (lst:int list): int = 
@@ -248,18 +273,46 @@ let (lst,lstlst) = tup in
   Printf.printf "knocked out! %d \n " (int_of_singleton lst); 
   stepper (repeat-1) (actor lstlst)
 
+
+(*
 let rec solver (lstlst:int list list ) = 
   let a = actor lstlst in  
 let b = stepper a in
 let rec loop (tup: int list*int list list ) = 
   let (lst,lstlst) = tup in 
-   if lst = [] then Printf.printf "solved it! \n " ; ([],[[]])
-	 else Printf.printf "working"; let a = stepper tup in 
+   if lst = [] then (*Printf.printf "solved it! \n " ;*) ([],[[]])
+        else Printf.printf "working"; let a = stepper tup in 
       loop a 
 loop b
-
+;;
+*)				       
 
 let list = [[1;2];[3;4;5];[1;2;5];[4;1;2];[2;3;5]]
 
+type metadrop = { number_chunks : int ; pieces_list : int list ; contents : string }
 
-   
+let metadrop_xor (m1: metadrop) (m2: metadrop) : metadrop = 
+ raise TODO
+
+ (* removes the simplest metadrop from the list 
+  * simplest meaning fewest chunks contribting to it 
+  * idealy it removes a singleton  *)
+let metadrop_list_simplify (mlist: metadrop list) : (metadrop * metadrop list) =
+ raise TODO
+
+let remove_empties2 (mlist: metadrop list) : metadrop list = 
+ raise TODO
+
+ (* fixes each metadrop in a mlist as fixing is described above  *)
+let metadrop_list_fixer (mlist: metadrop list) : metadrop list = 
+  let metadrop_fixer (m: metadrop) : metadrop = 
+  raise TODO 
+  in 
+  let a = List.map metadrop_fixer mlist in 
+  remove_empties2 a
+;;
+
+ (* takes a mlist pulls out the simplest metadrop then knocks that metadrop
+  * out of the list and returns the tuple (simple metadrop * fixed knocked mlist) *) 
+let metadrop_list_simplify (mlist: metadrop list) : (metadrop * metadrop list) = 
+  raise TODO
