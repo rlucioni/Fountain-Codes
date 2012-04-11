@@ -18,6 +18,9 @@ object
     (* a list of all metadrop in the goblet  *)
     val mutable all_metadrops : metadrop list 
     
+   (* a list of metadrops that are made of one chunk *) 
+    val mutable solved_metadots : metadrop list
+    
     (* data structure representing the part of the message we have decoded so
      * far *) (* string for current implementation  *)
     val mutable message :string 
@@ -28,9 +31,11 @@ object
     (* takes the droplet d  and returns the metadrop  *)
     method get_metadrop: metadrop
 
-    (* takes a droplet as an argument, runs get_metadrop on it, adds it to all_metadrops
-     * and add any decoded pieces to message if possible  *)
-    method decode_drop: unit
+    (* takes a droplet runs get_metadrop and adds it to the all_metadrops *)
+    method get_droplet : droplet -> unit 
+
+    (* runs on all_metadrops and trys to decode it  *)
+    method decode: unit
 
     (* takes two metadrops as arguments,  xors the data and xors the 
      * pieces_list to produce a new metadrop  *)
