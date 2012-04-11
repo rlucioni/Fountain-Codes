@@ -1,5 +1,5 @@
 open Random;;
- open Droplet;;
+(* open Droplet;;*)
 
 (* the fountain produces droplets according to the fountain code 
  * implementation chosen *)
@@ -45,6 +45,8 @@ end
 
 class lt_fountain (d: string) (ps: int) (bound : int) : fountain =
 object (this)
+  (*   type droplet = lt_droplet
+   *  we may need some sort of a line like this ! *) 
     val mutable data           = d
     val mutable piece_size     = ps
     val mutable total_pieces   = (String.length d) / ps
@@ -56,7 +58,9 @@ object (this)
     method rand_droplet_pieces = droplet_pieces <- (int bound) + 1
     
     (* we may be able to abstract this out to create different distributions *)
-    method get_piece           = int_of_char data.[int total_pieces]
+    method get_piece           = (* int_of_char data.[int total_pieces]*) 
+      let a = (int total_pieces) in (Printf.printf "encoding#: %d \n" a); int_of_char data.[a]                             
+
 
     (* not a public method *)
     method private xor         =

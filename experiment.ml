@@ -291,6 +291,14 @@ let list = [[1;2];[3;4;5];[1;2;5];[4;1;2];[2;3;5]]
 
 type metadrop = { number_chunks : int ; pieces_list : int list ; contents : string }
 
+
+
+
+
+
+
+
+
 let metadrop_xor (m1: metadrop) (m2: metadrop) : metadrop = 
  raise TODO
 
@@ -316,3 +324,5 @@ let metadrop_list_fixer (mlist: metadrop list) : metadrop list =
   * out of the list and returns the tuple (simple metadrop * fixed knocked mlist) *) 
 let metadrop_list_simplify (mlist: metadrop list) : (metadrop * metadrop list) = 
   raise TODO
+
+
