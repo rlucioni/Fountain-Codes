@@ -1,4 +1,5 @@
 open Droplet 
+open Random
 exception TODO
  (* This is a type for metadrop which is a droplet that had its seed decoded into metadata
   * number_chunks is how many chunks went into the droplet
@@ -19,7 +20,7 @@ object
     val mutable all_metadrops : metadrop list 
     
    (* a list of metadrops that are made of one chunk *) 
-    val mutable solved_metadots : metadrop list
+    val mutable solved_metadrops : metadrop list
     
     (* data structure representing the part of the message we have decoded so
      * far *) (* string for current implementation  *)
@@ -29,7 +30,7 @@ object
     val mutable counter : int
 
     (* takes the droplet d  and returns the metadrop  *)
-    method get_metadrop: metadrop
+    method get_metadrop: droplet -> int -> metadrop
 
     (* takes a droplet runs get_metadrop and adds it to the all_metadrops *)
     method get_droplet : droplet -> unit 
@@ -58,19 +59,35 @@ end
 
 *)
 
-class lt_goblet (d: droplet) : goblet =
+class lt_goblet (d: droplet) (bound: int) : goblet =
 object
     val mutable totalPieces = d#get_contents.total_pieces
     (* initiates the message to a string of stars of the correct length
      * for fun  *)
     val mutable message = String.make (d#get_contents.total_pieces) '*'
     val mutable all_metadrops = [] 
+    val mutable solved_metadrops = []
     val mutable counter = 0
     
 
-    method get_metadrop: metadrop = raise TODO
+    method get_metadrop (d:droplet) (bound:int)  : metadrop = 
+      let drop = d#get_contents in 
+      let seed = drop.seed in 
+       (*Char.escaped changes a char to a string this is for if we want to encode 
+        * with string later  *) 
+      let contents = Char.escaped (drop.data) in
+     (* let total_pieces = drop.total_pieces *)
+      init seed; let num_chunks = int (bound+1) in 
+	 let rec get_int_list (n:int) : int list = 
+          ( if n > 0  then int totalPieces :: get_int_list (n-1)
+           else [(int totalPieces)] )
+         in
+     { number_chunks = num_chunks; pieces_list = (get_int_list num_chunks) ; contents}
+     
+    
+    method get_droplet (d: droplet) : unit = raise TODO 
 
-    method decode_drop: unit = raise TODO
+    method decode: unit = raise TODO
 
     method meta_d_xor: metadrop  = raise TODO
 
