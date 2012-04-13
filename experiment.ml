@@ -53,6 +53,8 @@ if it gets one singleton but doesnt finish then return the singletons
 
 *)
 
+type metadrop = { number_chunks : int ; pieces_list : int list ; contents : char }
+
 
  (* takes an int list and removes ints if they appear an even number of time
   * leaves one if they appear an odd number of times *)
@@ -69,6 +71,22 @@ if it gets one singleton but doesnt finish then return the singletons
  let _ = assert (lst_fixer [1;1] = [] )
  let _ = assert (lst_fixer [1;1;1] = [1])
  let _ = assert (lst_fixer [1;2;3;4;4;5;1] = [2;3;5])
+
+(* let metadrop_fixer (m:metadrop) : metadrop = 
+   let lst_fixer (lst:int list) : int list =
+  (   let lstSorted = List.sort compare lst in 
+      let rec duplicate_remover (lst: int list) : int list = 
+    ( match lst with 
+      |[] -> []
+      |hd::[] -> [hd]
+      |hd::tl -> if hd = List.hd tl then duplicate_remover (List.tl tl)
+         else hd::duplicate_remover tl)
+       in  duplicate_remover lstSorted )
+ in 
+   let lst = m.pieces_list in 
+   let lst2 = lst_fixer lst in 
+    { number_chunks = m.number_chunks ; pieces_list = lst2 ; contents = m.contents}
+*)
 
  (* maps list_fixer to an in list list *)
  let list_lst_fixer (lstlst: int list list) : int list list = 
@@ -156,7 +174,7 @@ let _ = assert (knockout [2;3] [1;2;4] = [2;3])
  * remover is a list of length 1 *)
 
 (* use to remove the empties int list from an int list list *) 
-let rec remove_empties (lstlst: int list list) : int list list =
+let rec remove_empties (lstlst: 'a list list) : 'a list list =
      match lstlst with
        |[] -> []
        | hd::[] -> [hd]
@@ -293,14 +311,6 @@ type metadrop = { number_chunks : int ; pieces_list : int list ; contents : stri
 
 
 
-
-
-
-
-
-
-let metadrop_xor (m1: metadrop) (m2: metadrop) : metadrop = 
- raise TODO
 
  (* removes the simplest metadrop from the list 
   * simplest meaning fewest chunks contribting to it 

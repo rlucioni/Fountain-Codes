@@ -1,10 +1,11 @@
 open Random;;
-(* open Droplet;;*)
+open Droplet;;
 
 (* the fountain produces droplets according to the fountain code 
  * implementation chosen *)
 
-class type fountain =
+class
+ type fountain =
 object
   
     (* the total data (file) being transferred *)
