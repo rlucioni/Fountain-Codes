@@ -1,4 +1,4 @@
-open Droplet 
+(*open Droplet*) 
 open Random
 exception TODO
  (* This is a type for metadrop which is a droplet that had its seed decoded into metadata
@@ -66,6 +66,10 @@ object
     method metadrop_fixer: metadrop -> metadrop
     method meta_simplify: metadrop -> metadrop -> metadrop 
     method get_all_metadrops: metadrop list
+    method singleKnockout: metadrop -> metadrop -> metadrop
+    method get_all_metadrops: metadrop list
+    method get_solved_singles: metadrop list
+    method singlesKnockout: metadrop list -> unit
 end
 
 (*
@@ -73,6 +77,7 @@ end
  *  total pieces is string length 
 
 *)
+
 
 class lt_goblet (d: droplet) (bound: int) : goblet =
 object (self)
@@ -101,13 +106,25 @@ object (self)
                            pieces_list = (get_int_list num_chunks);
                            contents}
      
-    
+
     method get_droplet (d: droplet) : unit = 
       let metad = (self#get_metadrop d bound) in 
      all_metadrops <- (metad::all_metadrops);
      ()
 
-    method decode: unit = raise TODO
+    method decode : unit =
+    self#singlesKnockout solved_metadrops; 
+      let rec solver (count: int): int = 
+         if all_metadrops = [] then count else 
+	   let simpleM = List.fold_left (self#meta_simplify) 
+                  {number_chunks = 0; pieces_list = []; contents = 'a'} all_metadrops in
+          if simpleM.number_chunks = 1 then let all_metadrops_new = List.map (fun x -> self#singleKnockout simpleM x) all_metadrops in
+           all_metadrops <- all_metadrops_new; 
+          solved_metadrops <- simpleM::solved_metadrops; solver (count+1)
+          else count
+       in
+     if (solver 0) > 0 then Printf.printf "progress was made \n" else Printf.printf "need more droplets \n"
+        
 
     method(* private*) metadrop_fixer (m:metadrop) : metadrop = 
       let lst_fixer (lst:int list) : int list =
@@ -121,41 +138,54 @@ object (self)
        in  duplicate_remover lstSorted )
       in 
    let lst = m.pieces_list in 
-   let lst2 = lst_fixer lst in 
-    { number_chunks = m.number_chunks ; pieces_list = lst2 ; contents = m.contents}
+   let lst2 = lst_fixer lst in
+   let num_chunk = List.length lst2 in 
+    { number_chunks = num_chunk ; pieces_list = lst2 ; contents = m.contents}
 
     method(* private*) meta_d_xor (m1:metadrop) (m2:metadrop) : metadrop  = 
       let lst = m1.pieces_list@m2.pieces_list in 
       let contents = char_of_int( (lxor) (int_of_char m1.contents) (int_of_char m2.contents))
-      in self#metadrop_fixer {number_chunks=m1.number_chunks; pieces_list = lst ; contents }
+      in self#metadrop_fixer {number_chunks= (List.length lst); pieces_list = lst ; contents }
   
-    method singleKnockout (solved_meta:metadrop) (m:metadrop) : metadrop = raise TODO
+    method (* private *) singleKnockout (solved_meta:metadrop) (m:metadrop) : metadrop = 
+      let knocker = solved_meta.pieces_list in 
+      match knocker with 
+	| hd::[] ->  let mlist = m.pieces_list in 
+                  if List.exists (fun x -> x = hd) mlist then (self#meta_d_xor solved_meta m)
+                   else m
+        | _ -> raise TODO (* really should raise a complaint that solved_meta wasn't solved *)
 
-   method meta_simplify (m1:metadrop) (m2:metadrop) : metadrop = raise TODO
-    (*   if m1.pieces_list = [] then m2 else if m2.pieces_list = [] then m1 else
-       if m1.pieces_list = m2.pieces_list then m1 else*)
-(*	 let simplify (lst1: int list) (lst2: int list) : int list = 
-	  ( if lst1 = [] then lst2 else if lst2 = [] then lst1 else
-	       if lst1 = lst2 then lst1 else
-		 let len1 = List.length lst1 in 
-		 let len2 = List.length lst2 in 
-		 let lst3 = int_list_xor lst1 lst2 in
-		 let len3 = List.length lst3 in 
-		 if (min len3 len2) = len3 && (min len3 len1) = len3 then lst3 
-		 else if (min len1 len2) = len1 then lst1 else lst2 )
-         in 
-      match (simplify (m1.pieces_list) (m2.pieces_list)) with 
-	| m1.pieces_list -> m1
-	| m2.pieces_list -> m2
-	| _ -> (self#meta_d_xor m1 m2)   *)
+
+    (* potential for trouble here ...*)
+    method (*private*) singlesKnockout (solvedSingles : metadrop list) : unit = 
+      let rec helper (solvedSingles: metadrop list) : unit =  
+         match solvedSingles with 
+	 | [] -> ()
+	 | hd::tl -> let all_metadrops_new = (List.map (fun x -> self#singleKnockout hd x) all_metadrops) in
+                      all_metadrops <- all_metadrops_new;
+                      helper tl 
+      in helper (solvedSingles)
+
+   method (* private *)meta_simplify (m1:metadrop) (m2:metadrop) : metadrop =
+     if m1.pieces_list = [] then m2 else if m2.pieces_list = [] then m1 else
+       if m1.pieces_list = m2.pieces_list then m1 else 
+         let len1 = List.length m1.pieces_list in 
+         let len2 = List.length m2.pieces_list in 
+         let m3 = self#meta_d_xor m1 m2 in 
+         let len3 = List.length m3.pieces_list in 
+        if (min len3 len2) = len3 && (min len3 len1) = len3 then m3 
+		 else if (min len1 len2) = len1 then m1 else m2 
+
   
     method get_message  = Printf.printf "message:: %s \n" message; message
+    method get_all_metadrops = all_metadrops
+    method get_solved_singles = solved_metadrops
     method get_all_metadrops = all_metadrops
 
     method print_progress : unit  = 
        Printf.printf "Total pieces: %d \n" totalPieces;
        Printf.printf "message:: %s \n" message;
-       Printf.printf "length of all_metadrops: %d " (List.length all_metadrops);
+       Printf.printf "length of all_metadrops: %d \n" (List.length all_metadrops);
        ()
 
 
