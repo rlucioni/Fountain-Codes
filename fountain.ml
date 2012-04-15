@@ -78,7 +78,11 @@ object (this)
                                               (seed)
 end
 
+
 (*
 let _ = c#get_droplet (a#output_droplet);;
-*)
 
+let _ = c#decode;;
+
+let _ = c#get_message;;
+*)

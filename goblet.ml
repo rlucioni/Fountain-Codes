@@ -1,4 +1,4 @@
-open Droplet
+open Droplet  
 open Random
 exception TODO
 
@@ -43,8 +43,9 @@ object
     (* number that shows how much of the file we have decoded, in pieces *)
     val mutable counter : int
 
-    (* takes the droplet d  and returns the metadrop  *)
-    method get_metadrop: droplet -> int -> metadrop
+    (* takes the droplet d  and returns the metadrop
+     * now private  *)
+    (*  method get_metadrop: droplet -> int -> metadrop *)
 
     (* takes a droplet runs get_metadrop and adds it to the all_metadrops *)
     method get_droplet : droplet -> unit 
@@ -74,13 +75,6 @@ object
   (*  method singlesKnockout: metadrop list -> unit *)
 end
 
-(*
- * just doing chars right now 
- *  total pieces is string length 
-
-*)
-
-
 class lt_goblet (d: droplet) (bound: int) : goblet =
 object (self)
     val mutable totalPieces = d#get_contents.total_pieces
@@ -91,8 +85,9 @@ object (self)
     val mutable solved_metadrops = []
     val mutable counter = 0
     
-
-    method get_metadrop (d:droplet) (bound:int)  : metadrop = 
+    (* droplet -> metadrop
+     * decodes the seed information *)
+    method private get_metadrop (d:droplet) (bound:int)  : metadrop = 
       let drop = d#get_contents in 
       let seed = drop.seed in 
        (*Char.escaped changes a char to a string this is for if we want to encode 
@@ -108,12 +103,14 @@ object (self)
                            pieces_list = (get_int_list num_chunks);
                            contents}
      
-
+    (* adds a droplet to the goblet 
+     *converts a droplet to a metadrops and adds it to all_metadrops *)
     method get_droplet (d: droplet) : unit = 
       let metad = (self#get_metadrop d bound) in 
      all_metadrops <- (metad::all_metadrops);
      ()
-
+    
+    (* attempts to decode the metadrops in all_metadrops *)
     method decode : unit =
     self#singlesKnockout solved_metadrops; 
       let rec solver (count: int): int = 
@@ -127,7 +124,7 @@ object (self)
        in
      if (solver 0) > 0 then Printf.printf "progress was made \n" else Printf.printf "need more droplets \n"
         
-
+    (* removes duplicate pairs from the pieces list of a metadrop  *)
     method private metadrop_fixer (m:metadrop) : metadrop = 
       let lst_fixer (lst:int list) : int list =
        (let lstSorted = List.sort compare lst in 
@@ -143,12 +140,14 @@ object (self)
    let lst2 = lst_fixer lst in
    let num_chunk = List.length lst2 in 
     { number_chunks = num_chunk ; pieces_list = lst2 ; contents = m.contents}
-
+   
+  (* xor for metadrops *)
     method private meta_d_xor (m1:metadrop) (m2:metadrop) : metadrop  = 
       let lst = m1.pieces_list@m2.pieces_list in 
       let contents = char_of_int( (lxor) (int_of_char m1.contents) (int_of_char m2.contents))
       in self#metadrop_fixer {number_chunks= (List.length lst); pieces_list = lst ; contents }
-  
+   
+   (* xors out a singleton metadrop from m if it needs to be removed *)
     method private singleKnockout (solved_meta:metadrop) (m:metadrop) : metadrop = 
       let knocker = solved_meta.pieces_list in 
       match knocker with 
@@ -158,7 +157,7 @@ object (self)
         | _ -> raise TODO (* really should raise a complaint that solved_meta wasn't solved *)
 
 
-    (* potential for trouble here ...*)
+    (* removes all the solved singles from the metadrops in all_metadrops  *)
     method private singlesKnockout (solvedSingles : metadrop list) : unit = 
       let rec helper (solvedSingles: metadrop list) : unit =  
          match solvedSingles with 
@@ -167,7 +166,7 @@ object (self)
                       all_metadrops <- all_metadrops_new;
                       helper tl 
       in helper (solvedSingles)
-
+   
    method private meta_simplify (m1:metadrop) (m2:metadrop) : metadrop =
      if m1.pieces_list = [] then m2 else if m2.pieces_list = [] then m1 else
        if m1.pieces_list = m2.pieces_list then m1 else 
@@ -177,8 +176,24 @@ object (self)
          let len3 = List.length m3.pieces_list in 
         if (min len3 len2) = len3 && (min len3 len1) = len3 then m3 
 		 else if (min len1 len2) = len1 then m1 else m2 
+   
 
-  
+   method private remove_empties : unit = 
+     let rec helper (list : metadrop list) : metadrop list = 
+        match list with
+	  | [] -> []
+	  | hd::[] -> if hd.number_chunks = 0 then [] else [hd]
+	  | hd:: tl -> if (List.hd tl).number_chunks = 0 
+                       then helper (hd::(List.tl tl)) 
+                       else if hd.number_chunks = 0 
+                            then helper tl 
+                            else hd::(helper tl)
+     in 
+     let newlist = helper all_metadrops in 
+     all_metadrops <- newlist 
+
+    (* puts the solved singles into the message 
+     * prints newest message *)
     method get_message: string = 
     let put (m:metadrop) : unit =  
        match m.pieces_list with
@@ -188,11 +203,13 @@ object (self)
      in
      List.iter (put) solved_metadrops;
      Printf.printf "message:: %s \n" message; message
-
+    
+   (* a way to see the other side  *)
     method get_all_metadrops = all_metadrops
     method get_solved_singles = solved_metadrops
     method get_all_metadrops = all_metadrops
-
+    
+    (* an early implementation of a progress printer *)
     method print_progress : unit  = 
        Printf.printf "Total pieces: %d \n" totalPieces;
        Printf.printf "message:: %s \n" message;
