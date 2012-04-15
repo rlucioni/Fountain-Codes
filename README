@@ -14,9 +14,9 @@ File Manifest
     fountain.ml   - defines the Fountain, produces Droplets according to the 
                     fountain code implementation chosen
     
-    goblet.ml     - defines a Cup, used to collect Droplets and reconstruct the 
-                    original data. This takes a droplet (seed, the data to be 
-                    decoded, and the total number of pieces)
+    goblet.ml     - defines a Goblet, used to collect Droplets and reconstruct 
+                    the original data. This takes a droplet (seed, the data to 
+                    be decoded, and the total number of pieces)
 
     operations.ml - contains actual usage of our droplet, fountain, and goblet 
                     classes - hence "operations"
