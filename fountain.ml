@@ -77,3 +77,8 @@ object (this)
                                               (total_pieces)
                                               (seed)
 end
+
+
+let _ = c#get_droplet (a#output_droplet);;
+
+

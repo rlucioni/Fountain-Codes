@@ -1,4 +1,4 @@
-(*open Droplet*) 
+(*open Droplet*)
 open Random
 exception TODO
  (* This is a type for metadrop which is a droplet that had its seed decoded into metadata
@@ -177,7 +177,16 @@ object (self)
 		 else if (min len1 len2) = len1 then m1 else m2 
 
   
-    method get_message  = Printf.printf "message:: %s \n" message; message
+    method get_message: string = 
+    let put (m:metadrop) : unit =  
+       match m.pieces_list with
+	 |[] -> raise TODO
+	 |hd::[] -> message.[hd] <- m.contents
+	 | hd:: tl -> raise TODO
+     in
+     List.iter (put) solved_metadrops;
+     Printf.printf "message:: %s \n" message; message
+
     method get_all_metadrops = all_metadrops
     method get_solved_singles = solved_metadrops
     method get_all_metadrops = all_metadrops
