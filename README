@@ -21,6 +21,11 @@ File Manifest
     operations.ml - contains actual usage of our droplet, fountain, and goblet 
                     classes - hence "operations"
 
+    experiment.ml - sandbox for testing new ideas
+
+    test_framework.ml,
+    pretty_print.ml   - contain the CamelJockey testing framework
+
 Configuration
 TODO
 
