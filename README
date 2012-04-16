@@ -30,7 +30,30 @@ Configuration
 TODO
 
 Operating Instructions
-TODO
+make sure open Droplet is commented out at the top of both fountain.ml and goblet.ml and save
+ocaml top level
+#use "droplet.ml";;
+#use "fountain.ml";;
+#use "goblet.ml";;
+let f = new lt_fountain "this is the string to encode" 1 5;; (* 1 is the only option for the first number...  *)
+let d = f#output_droplet;; 
+let gob = new lt_goblet d 5;;
+
+now you have set up a fountain and a goblet 
+to create a new 
+
+gob#get_droplet (f#output_dropet);; (* this creates a droplet and feeds it to the goblet  *)
+
+gob#decode (* this attempts to decode the droplets that it has not decoded already  *)
+
+gob$get_message (* this outputs the message as it is now   *)
+
+(* other useful debugging  *)
+gob#get_all_metadrops
+gob#get_solved_singles
+gob#print_progress
+
+
 
 Known Bugs
 TODO

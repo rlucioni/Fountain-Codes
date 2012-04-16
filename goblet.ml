@@ -1,4 +1,4 @@
-open Droplet  
+(* open Droplet *)  
 open Random
 exception TODO
 
@@ -51,7 +51,7 @@ object
 
     (* takes a droplet runs get_metadrop and adds it to the all_metadrops *)
     method get_droplet : droplet -> unit 
-
+    method get_droplet_list : droplet list -> unit
     (* runs on all_metadrops and trys to decode it  *)
     method decode: unit
 
@@ -111,6 +111,9 @@ object (self)
       let metad = (self#get_metadrop d bound) in 
      all_metadrops <- (metad::all_metadrops);
      ()
+     
+    method get_droplet_list (dlist: droplet list) : unit = 
+      List.iter (self#get_droplet) dlist
     
     (* attempts to decode the metadrops in all_metadrops *)
     method decode : unit =
@@ -220,10 +223,10 @@ object (self)
    (* a way to see the other side  *)
     method get_all_metadrops = all_metadrops
     method get_solved_singles = solved_metadrops
-    method get_all_metadrops = all_metadrops
     
     (* an early implementation of a progress printer *)
     method print_progress : unit  = 
+       Printf.printf "Count: %d \n" counter;
        Printf.printf "Total pieces: %d \n" totalPieces;
        Printf.printf "message:: %s \n" message;
        Printf.printf "length of all_metadrops: %d \n" 

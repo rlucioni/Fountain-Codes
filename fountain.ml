@@ -1,5 +1,5 @@
 open Random;;
-open Droplet;;
+(* open Droplet;; *)
 
 (* the fountain produces droplets according to the fountain code 
  * implementation chosen *)
@@ -41,6 +41,7 @@ object
     (* this generates a new random droplet object, using the above 
        methods and instance variables *)
     method output_droplet : droplet
+    method output_droplet_list : int -> droplet list
 end
 
 
@@ -76,13 +77,15 @@ object (this)
                                new lt_droplet (char_of_int this#xor) 
                                               (total_pieces)
                                               (seed)
+    method output_droplet_list (n:int) : droplet list = 
+     if n > 0 then this#output_droplet::(this#output_droplet_list (n-1)) else []
 end
 
 
-(*
+
 let _ = c#get_droplet (a#output_droplet);;
 
 let _ = c#decode;;
 
 let _ = c#get_message;;
-*)
+
