@@ -117,6 +117,7 @@ object (self)
     
     (* attempts to decode the metadrops in all_metadrops *)
     method decode : unit =
+    if self#check_complete then Printf.printf "its already solved" else
     self#singlesKnockout solved_metadrops; 
       let rec solver (count: int): int = 
          if all_metadrops = [] then count else 
@@ -129,9 +130,10 @@ object (self)
            all_metadrops <- all_metadrops_new; 
           solved_metadrops <- simpleM::solved_metadrops; solver (count+1)
           else count
-       in
-     if (solver 0) > 0 
-        then Printf.printf "progress was made \n" 
+      in
+      let progress = solver 0 in
+     if (progress) > 0 
+     then let a = (counter + progress) in  counter <- a; Printf.printf "progress was made \n" 
         else Printf.printf "need more droplets \n"
         
     (* removes duplicate pairs from the pieces list of a metadrop  *)
