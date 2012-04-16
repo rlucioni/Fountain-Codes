@@ -4,7 +4,7 @@ open Droplet
 open Fountain
 open Goblet
 
-let message = "this is a test!"
+let message = "I love Theresa a whole lot!"
 
 let f = new lt_fountain message 1 10
 let g = new lt_goblet f#output_droplet 10
