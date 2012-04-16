@@ -75,6 +75,7 @@ object
     method get_all_metadrops: metadrop list
     method get_solved_singles: metadrop list
   (*  method singlesKnockout: metadrop list -> unit *)
+    method remove_empties : unit
 end
 
 class lt_goblet (d: droplet) (bound: int) : goblet =
@@ -117,8 +118,8 @@ object (self)
     
     (* attempts to decode the metadrops in all_metadrops *)
     method decode : unit =
-    if self#check_complete then Printf.printf "its already solved" else
-    self#singlesKnockout solved_metadrops; 
+    if self#check_complete then Printf.printf "its already solved" else 
+      self#singlesKnockout solved_metadrops; 
       let rec solver (count: int): int = 
          if all_metadrops = [] then count else 
 	   let simpleM = List.fold_left (self#meta_simplify) 
@@ -133,8 +134,9 @@ object (self)
       in
       let progress = solver 0 in
      if (progress) > 0 
-     then let a = (counter + progress) in  counter <- a; Printf.printf "progress was made \n" 
-        else Printf.printf "need more droplets \n"
+     then(* self#remove_empties;*) let a = (counter + progress) in  counter <- a; Printf.printf "progress was made \n" 
+     else Printf.printf "need more droplets \n" 
+ 
         
     (* removes duplicate pairs from the pieces list of a metadrop  *)
     method private metadrop_fixer (m:metadrop) : metadrop = 
@@ -196,7 +198,7 @@ object (self)
 		 else if (min len1 len2) = len1 then m1 else m2 
    
 
-   method private remove_empties : unit = 
+   method remove_empties : unit = 
      let rec helper (list : metadrop list) : metadrop list = 
         match list with
 	  | [] -> []

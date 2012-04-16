@@ -80,8 +80,7 @@ object (this)
     method output_droplet_list (n:int) : droplet list = 
      if n > 0 then this#output_droplet::(this#output_droplet_list (n-1)) else []
 end
-
-
+(*
 
 let _ = c#get_droplet (a#output_droplet);;
 
@@ -89,3 +88,4 @@ let _ = c#decode;;
 
 let _ = c#get_message;;
 
+*)
