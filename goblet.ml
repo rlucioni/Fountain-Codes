@@ -118,24 +118,30 @@ object (self)
     
     (* attempts to decode the metadrops in all_metadrops *)
     method decode : unit =
-    if self#check_complete then Printf.printf "its already solved" else 
-      self#singlesKnockout solved_metadrops; 
-      let rec solver (count: int): int = 
-         if all_metadrops = [] then count else 
-	   let simpleM = List.fold_left (self#meta_simplify) 
-                  { number_chunks = 0; 
-                    pieces_list = []; 
-                    contents = 'a'} all_metadrops in
-          if simpleM.number_chunks = 1 then let all_metadrops_new = List.map 
-                       (fun x -> self#singleKnockout simpleM x) all_metadrops in
-           all_metadrops <- all_metadrops_new; 
-          solved_metadrops <- simpleM::solved_metadrops; solver (count+1)
-          else count
-      in
+      if self#check_complete 
+        then Printf.printf "Message has been fully reconstructed." 
+        else 
+            self#singlesKnockout solved_metadrops; 
+            let rec solver (count: int): int = 
+                if all_metadrops = [] 
+                  then count 
+                  else 
+	                  let simpleM = List.fold_left (self#meta_simplify) 
+                      { number_chunks = 0; 
+                        pieces_list = []; 
+                        contents = 'a'} all_metadrops in
+                      if simpleM.number_chunks = 1 
+                        then let all_metadrops_new = List.map 
+                          (fun x -> self#singleKnockout simpleM x) all_metadrops in
+                          all_metadrops <- all_metadrops_new; 
+                          solved_metadrops <- simpleM::solved_metadrops; solver (count+1)
+                        else count
+            in
       let progress = solver 0 in
-     if (progress) > 0 
-     then(* self#remove_empties;*) let a = (counter + progress) in  counter <- a; Printf.printf "progress was made \n" 
-     else Printf.printf "need more droplets \n" 
+      if (progress) > 0 
+        then(* self#remove_empties;*) let a = (counter + progress) in 
+            counter <- a; Printf.printf "Message partially reconstructed. \n" 
+        else Printf.printf "You must provide additional droplets. \n"
  
         
     (* removes duplicate pairs from the pieces list of a metadrop  *)
@@ -173,7 +179,7 @@ object (self)
                   if List.exists (fun x -> x = hd) mlist 
                     then (self#meta_d_xor solved_meta m)
                      else m
-        | _ -> failwith "solved_meta wasn't solved"
+        | _ -> failwith "solved_meta was not solved"
 
 
     (* removes all the solved singles from the metadrops in all_metadrops  *)
@@ -222,7 +228,7 @@ object (self)
 	 | hd:: tl -> raise TODO
      in
      List.iter (put) solved_metadrops;
-     Printf.printf "message:: %s \n" message; message
+     Printf.printf "\nKNOWN MESSAGE: %s \n" message; message
     
    (* a way to see the other side  *)
     method get_all_metadrops = all_metadrops
@@ -230,12 +236,13 @@ object (self)
     
     (* an early implementation of a progress printer *)
     method print_progress : unit  = 
-       Printf.printf "Count: %d \n" counter;
-       Printf.printf "Total pieces: %d \n" totalPieces;
-       Printf.printf "message:: %s \n" message;
-       Printf.printf "length of all_metadrops: %d \n" 
-                                                    (List.length all_metadrops);
-       ()
+       Printf.printf "\n \n"; 
+       Printf.printf "RECONSTRUCTED MESSAGE: %s \n" message;
+       Printf.printf "COUNT: %d \n" counter;
+       Printf.printf "TOTAL PIECES: %d \n" totalPieces;
+       Printf.printf "METADROPS CONSUMED: %d \n" 
+                                                   (List.length all_metadrops); 
+                                                   ()
 
 
 
