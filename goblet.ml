@@ -1,4 +1,4 @@
-open Droplet 
+open Droplet
 open Random
 exception TODO
 
@@ -33,7 +33,7 @@ object
     val mutable totalPieces : int
  
     (* a list of all metadrop in the goblet  *)
-    val mutable all_metadrops : metadrop list 
+    val mutable all_metadrops : metadrop list
     
    (* a list of metadrops that are made of one chunk *) 
     val mutable solved_metadrops : metadrop list
