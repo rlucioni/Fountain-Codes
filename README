@@ -2,8 +2,7 @@ README
 
 CS 51 Final Project: Fountain Codes
 
-These are implementations of fountain code algorithms written in OCaml.
-Implemented algorithms will include Luby transform (LT) codes and Tornado codes.
+This is an implementation of a fountain code algorithm written in OCaml.
 
 ********************************************************************************
 
@@ -26,40 +25,52 @@ File Manifest
     test_framework.ml,
     pretty_print.ml   - contain the CamelJockey testing framework
 
-Configuration
-TODO
 
-Operating Instructions
-make sure open Droplet is commented out at the top of both fountain.ml and goblet.ml and save
-ocaml top level
+OPERATING INSTRUCTIONS
+Make sure open Droplet is commented out at the top of both fountain.ml and 
+goblet.ml. Save.
+
+In the OCaml toplevel, type:
 #use "droplet.ml";;
 #use "fountain.ml";;
 #use "goblet.ml";;
-let f = new lt_fountain "this is the string to encode" 1 5;; (* 1 is the only option for the first number...  *)
+let f = new lt_fountain "this is the string to encode" 1 5;; (* 1 is the only 
+usable option for the second argument *)
 let d = f#output_droplet;; 
 let gob = new lt_goblet d 5;;
 
-now you have set up a fountain and a goblet 
-to create a new 
+You have now set up a fountain ( f ) and a goblet ( gob ). 
+To create a new droplet call f#output_droplet .
+To add a droplet to the goblet call gob#get_droplet d  ( where d is a droplet ).
+To do both at the same time, call gob#get_droplet (f#output_droplet);; 
+( this creates a droplet and feeds it to the goblet )
 
-gob#get_droplet (f#output_dropet);; (* this creates a droplet and feeds it to the goblet  *)
+To decode the droplets that have not been decoded already, call gob#decode
 
-gob#decode (* this attempts to decode the droplets that it has not decoded already  *)
+To output the message received so far, call gob#get_message
 
-gob$get_message (* this outputs the message as it is now   *)
-
-(* other useful debugging  *)
+Other useful debugging  commands:
 gob#get_all_metadrops
 gob#get_solved_singles
 gob#print_progress
 
 
+KNOWN BUGS
+Our fountain code always works when the piece size passed to Fountain as an 
+argument is one character. When this character number is changed, however, we 
+start running into some interesting bugs where the data to be transmitted is 
+only partially encoded. This behavior is a result of the way in which we 
+implemented Fountain - it expects the size of each piece to be one character. 
+Fixing the bug will involve rewriting Fountain such that it accepts an 
+arbitrary piece size. We will probably transition from using just chars for 
+data transmission to using arrays of chars. This will fix the bug because chars 
+are limited to one piece of data, whereas arrays of chars can be larger. 
 
-Known Bugs
-TODO
-
-Troubleshooting
-TODO
+Another problem we currently have is that the decoding is fairly inefficient. 
+When decoding we have to wait for a droplet that only has one piece of data in 
+it, while we could optimize the decoding process such that (1, 2, 3) could be 
+XORed with (1, 2) to yield 3. In this example, we are currently waiting for 1, 
+then decoding (1, 2) by XORing 1 with (1, 2).
 
 Contact Information
     Renzo Lucioni   : renzolucioni@gmail.com
