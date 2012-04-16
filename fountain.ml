@@ -1,5 +1,5 @@
 open Random;;
-(* open Droplet;; *)
+open Droplet;;
 
 (* the fountain produces droplets according to the fountain code 
  * implementation chosen *)
@@ -61,7 +61,8 @@ object (this)
     
     (* we may be able to abstract this out to create different distributions *)
     method get_piece           = (* int_of_char data.[int total_pieces]*) 
-      let a = (int total_pieces) in (Printf.printf "encoding#: %d \n" a); int_of_char data.[a]                             
+      let a = (int total_pieces) in 
+      (Printf.printf "encoding#: %d \n" a); int_of_char data.[a] 
 
 
     (* not a public method *)
@@ -82,10 +83,10 @@ object (this)
 end
 
 
-
+(*
 let _ = c#get_droplet (a#output_droplet);;
 
 let _ = c#decode;;
 
 let _ = c#get_message;;
-
+*)
