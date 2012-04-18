@@ -4,7 +4,7 @@ open Droplet
 open Fountain
 open Goblet
 
-let message = "This is a test."
+let message = Sys.argv.(1)
 
 let f = new lt_fountain message 1 5
 let g = new lt_goblet f#output_droplet 5
