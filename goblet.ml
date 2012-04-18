@@ -1,4 +1,4 @@
-open Droplet 
+open Droplet
 open Random
 exception TODO
 
