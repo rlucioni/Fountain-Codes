@@ -2,26 +2,32 @@
 open Test_framework
 open Droplet
 open Fountain
-open Goblet
+open Goblet;;
 
-let transmit (message : string) : unit = 
-    let f = new lt_fountain message 1 5 in
-    let g = new lt_goblet f#output_droplet 5 in
-    let rec helper () = 
-        if g#check_complete
-          then ()
-          else (g#get_droplet f#output_droplet); 
-          g#decode; g#print_progress;
-          helper ()
-    in
-    helper ()
+if (Array.length Sys.argv) <> 2 
+then failwith "Please provide one string argument to this file."
+else ()
 
-transmit "this is an awesome test" ;;
+let message = Sys.argv.(1)
 
-(* sample usage of the testing framework *)
+let f = new lt_fountain message 1 5
+let g = new lt_goblet f#output_droplet 5
+
+let rec transmit () : unit = 
+    if g#check_complete
+      then g#print_progress
+      else ((g#get_droplet f#output_droplet); 
+           g#decode;
+           ignore(g#get_message); 
+           transmit ()) ;;
+
+transmit () ;;
+
+
+(* Tests for transmit *)
 (*
-let sample_test = mk_expect_test
-    (fun () -> test_function expected_result "message" ;;
+let test1 = mk_expect_test
+    (fun () -> transmit ()) "This is a test." "This is a test." ;;
 
-run_test_set [sample_test;] "group message" ;;
+run_test_set [test1;] "Transmit Tests" ;;
 *)

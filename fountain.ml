@@ -52,10 +52,10 @@ object (this)
     val mutable data           = d
     val mutable piece_size     = ps
     val mutable total_pieces   = (String.length d) / ps
-    val mutable seed           = bits ()
+    val mutable seed           = self_init (); int 10000
     val mutable droplet_pieces = 0
 
-    method random_seed         = seed <- bits (); init seed
+    method random_seed         = self_init (); seed <- int 10000; init seed
     
     method rand_droplet_pieces = droplet_pieces <- (int bound) + 1
     

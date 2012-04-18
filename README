@@ -27,6 +27,18 @@ File Manifest
 
 
 OPERATING INSTRUCTIONS
+In operations.ml, we have defined basic testing functionality for our LT code. 
+There is a hard-coded string on the top of the file called “message.” We then 
+initialize a fountain and a goblet using this string, and then the function 
+“transmit” recursively tries to decode the string until it is successfully 
+decoded, printing out how much of the message has been decoded so far on each 
+iteration.
+
+To run this testing implementation, simply edit the “message” string to 
+whatever message you would like to transmit. Then compile using “make” in the 
+terminal, and run operations.ml (./operations).
+
+Alternatively, for use in the toplevel:
 Make sure open Droplet is commented out at the top of both fountain.ml and 
 goblet.ml. Save.
 
