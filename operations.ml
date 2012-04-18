@@ -2,7 +2,11 @@
 open Test_framework
 open Droplet
 open Fountain
-open Goblet
+open Goblet;;
+
+if (Array.length Sys.argv) <> 2 
+then failwith "Please provide one string argument to this file."
+else ()
 
 let message = Sys.argv.(1)
 
