@@ -4,7 +4,10 @@ open Droplet
 open Fountain
 open Goblet
 
-let message = "This is a test."
+let message = "This is a test. Stop freaking out Anand this is cool watch and be
+happy and then chill out. What we do is pass this message into Fountain, which
+spits out droplets and passes them to goblet, which then reconstructs the
+message from randomly selected, xored packages of the original message."
 
 let f = new lt_fountain message 1 5
 let g = new lt_goblet f#output_droplet 5
