@@ -1,4 +1,4 @@
-type droplet_record = {data : char; total_pieces : int; seed : int}
+type droplet_record = {data : string; total_pieces : int; seed : int}
 
 (* the Droplet, containing a seed and the XOR'd data *)
 class type droplet =
@@ -28,7 +28,7 @@ object
                         
     (* still need to implement printing for testing *)
     method to_string : string =
-        "{Data :" ^ (Char.escaped data)
+        "{Data :" ^ (String.escaped data)
 (*(String.concat "" (List.map (string_of_int data)))*) ^ 
         ", Total pieces: " ^ (string_of_int total_pieces) ^ ", Seed: " ^
         (string_of_int seed) ^ "}"
