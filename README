@@ -20,69 +20,40 @@ File Manifest
     operations.ml - contains actual usage of our droplet, fountain, and goblet 
                     classes - hence "operations"
 
-    experiment.ml - sandbox for testing new ideas
+    string_droplet.ml,
+    string_fountain.ml,
+    string_goblet.ml,
+    string_operations.ml - same as above, except implemented such that an 
+                           arbitrary piece size can be designated when breaking 
+                           up the data and building droplets
+
+    experiment.ml        - sandbox for testing new ideas
 
     test_framework.ml,
-    pretty_print.ml   - contain the CamelJockey testing framework
+    pretty_print.ml      - contain the CamelJockey testing framework
+
+    lenna.jpg,
+    lenna.png            - images for testing file I/O
 
 
 OPERATING INSTRUCTIONS
-In operations.ml, we have defined basic testing functionality for our LT code. 
-There is a hard-coded string on the top of the file called “message.” We then 
-initialize a fountain and a goblet using this string, and then the function 
-“transmit” recursively tries to decode the string until it is successfully 
-decoded, printing out how much of the message has been decoded so far on each 
-iteration.
+To run, compile first, and then, from the command line:
 
-To run this testing implementation, simply edit the “message” string to 
-whatever message you would like to transmit. Then compile using “make” in the 
-terminal, and run operations.ml (./operations).
-
-Alternatively, for use in the toplevel:
-Make sure open Droplet is commented out at the top of both fountain.ml and 
-goblet.ml. Save.
-
-In the OCaml toplevel, type:
-#use "droplet.ml";;
-#use "fountain.ml";;
-#use "goblet.ml";;
-let f = new lt_fountain "this is the string to encode" 1 5;; (* 1 is the only 
-usable option for the second argument *)
-let d = f#output_droplet;; 
-let gob = new lt_goblet d 5;;
-
-You have now set up a fountain ( f ) and a goblet ( gob ). 
-To create a new droplet call f#output_droplet .
-To add a droplet to the goblet call gob#get_droplet d  ( where d is a droplet ).
-To do both at the same time, call gob#get_droplet (f#output_droplet);; 
-( this creates a droplet and feeds it to the goblet )
-
-To decode the droplets that have not been decoded already, call gob#decode
-
-To output the message received so far, call gob#get_message
-
-Other useful debugging  commands:
-gob#get_all_metadrops
-gob#get_solved_singles
-gob#print_progress
+./string_operations "message" piece_size max_pieces
 
 
-KNOWN BUGS
-Our fountain code always works when the piece size passed to Fountain as an 
-argument is one character. When this character number is changed, however, we 
-start running into some interesting bugs where the data to be transmitted is 
-only partially encoded. This behavior is a result of the way in which we 
-implemented Fountain - it expects the size of each piece to be one character. 
-Fixing the bug will involve rewriting Fountain such that it accepts an 
-arbitrary piece size. We will probably transition from using just chars for 
-data transmission to using arrays of chars. This will fix the bug because chars 
-are limited to one piece of data, whereas arrays of chars can be larger. 
+KNOWN BUGS/INEFFICIENCIES
+The math currently being used in Goblet is sub-optimal and stands to be improved
+by allowing the program the recognize when it can XOR immediately, instead of
+waiting for a droplet containing a single piece of data. 
 
-Another problem we currently have is that the decoding is fairly inefficient. 
-When decoding we have to wait for a droplet that only has one piece of data in 
-it, while we could optimize the decoding process such that (1, 2, 3) could be 
-XORed with (1, 2) to yield 3. In this example, we are currently waiting for 1, 
-then decoding (1, 2) by XORing 1 with (1, 2).
+Duplicate pieces may appear in a single droplet. These duplicate do not provide
+any additional information.
+
+When you designated a piece size larger than the input message, spaces will be
+added to your message until it divides evenly by the piece size you have given.
+This also happens any time the message does not divide cleanly by the piece
+size given. This is expected behavior, but can be improved.
 
 Contact Information
     Renzo Lucioni   : renzolucioni@gmail.com
