@@ -27,13 +27,23 @@ File Manifest
                            arbitrary piece size can be designated when breaking 
                            up the data and building droplets
 
+    io_operations.ml     - similar to other operations files, this file allows
+                           encoding and decoding of an arbitrary file
+
+    copier.ml            - a test of OCaml's I/O features; used to create a 
+                           copy of a file whose name is hardcoded in a hardcoded
+                           destination
+
+    imagecp.jpg          - a dump for copier.ml; useful in testing
+
     experiment.ml        - sandbox for testing new ideas
+
+    lenna.jpg,
+    lenna.png            - images for testing file I/O
 
     test_framework.ml,
     pretty_print.ml      - contain the CamelJockey testing framework
 
-    lenna.jpg,
-    lenna.png            - images for testing file I/O
 
 
 OPERATING INSTRUCTIONS
@@ -43,6 +53,8 @@ To run, compile first, and then, from the command line:
 
 
 KNOWN BUGS/INEFFICIENCIES
+io_operations compiles but overflows upon execution
+
 The math currently being used in Goblet is sub-optimal and stands to be improved
 by allowing the program the recognize when it can XOR immediately, instead of
 waiting for a droplet containing a single piece of data. 
