@@ -5,7 +5,7 @@ open String_fountain
 open String_goblet;;
 
 if (Array.length Sys.argv) <> 4
-then failwith "Correct usage: ./string_operations string piece_size max_pieces"
+then failwith "Usage: ./string_operations string piece_size max_pieces"
 else ()
 
 let message = Sys.argv.(1)
