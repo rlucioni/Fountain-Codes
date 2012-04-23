@@ -66,9 +66,3 @@ When you designated a piece size larger than the input message, spaces will be
 added to your message until it divides evenly by the piece size you have given.
 This also happens any time the message does not divide cleanly by the piece
 size given. This is expected behavior, but can be improved.
-
-Contact Information
-    Renzo Lucioni   : renzolucioni@gmail.com
-    Vipul Shekhawat : vish092@gmail.com
-    Danny Broudy    : daniel.broudy@gmail.com
-    Peregrine Badger: pbadger@college.harvard.edu

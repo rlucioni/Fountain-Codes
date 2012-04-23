@@ -19,7 +19,7 @@ let out_channel = open_out output_destination ;;
 flush out_channel;;
 
 let rec file_to_string () : string =
-    (input_line in_channel) ^ (file_to_string ())
+    (input_line in_channel) (* ^ (file_to_string ()) *)
 
 let message = file_to_string ()
 
