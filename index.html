@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Fountain-codes by lucesco</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/lucesco/Fountain-Codes">Fork On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/lucesco/Fountain-Codes/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/lucesco/Fountain-Codes/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Fountain-codes</h1>
+          <p>CS 51 Final Project (Spring 2012)</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/lucesco">lucesco</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h3>CS 51 Final Project: Fountain Codes</h3>
+
+<p>This is an implementation of the LT fountain code algorithm written in OCaml.</p>
+
+<hr><h3>File Manifest</h3>
+
+<pre><code>droplet.ml    - defines the Droplet, containing a seed, the XOR'd data, and 
+                the total number of pieces
+
+fountain.ml   - defines the Fountain, produces Droplets according to the 
+                fountain code implementation chosen
+
+goblet.ml     - defines a Goblet, used to collect Droplets and reconstruct 
+                the original data. This takes a droplet (seed, the data to 
+                be decoded, and the total number of pieces)
+
+operations.ml - contains actual usage of our droplet, fountain, and goblet 
+                classes - hence "operations"
+
+string_droplet.ml,
+string_fountain.ml,
+string_goblet.ml,
+string_operations.ml - same as above, except implemented such that an 
+                       arbitrary piece size can be designated when breaking 
+                       up the data and building droplets
+
+io_operations.ml     - similar to other operations files, this file allows
+                       encoding and decoding of an arbitrary file
+
+copier.ml            - a test of OCaml's I/O features; used to create a 
+                       copy of a file whose name is hardcoded in a hardcoded
+                       destination
+
+imagecp.jpg          - a dump for copier.ml; useful in testing
+
+experiment.ml        - sandbox for testing new ideas
+
+lenna.jpg,
+lenna.png            - images for testing file I/O
+
+test_framework.ml,
+pretty_print.ml      - contain the CamelJockey testing framework
+</code></pre>
+
+<h3>Operating Instructions</h3>
+
+<p>To run, compile first, and then, from the command line:</p>
+
+<pre><code>./string_operations "message" piece_size max_pieces
+</code></pre>
+
+<h3>Known Bugs and Inefficiencies</h3>
+
+<p>io_operations compiles but overflows upon execution</p>
+
+<p>The math currently being used in Goblet is sub-optimal and stands to be improved
+by allowing the program the recognize when it can XOR immediately, instead of
+waiting for a droplet containing a single piece of data. </p>
+
+<p>Duplicate pieces may appear in a single droplet. These duplicate do not provide
+any additional information.</p>
+
+<p>When you designated a piece size larger than the input message, spaces will be
+added to your message until it divides evenly by the piece size you have given.
+This also happens any time the message does not divide cleanly by the piece
+size given. This is expected behavior, but can be improved.</p>
+
+<h3>Contact Information</h3>
+
+<pre><code>Renzo Lucioni   : renzolucioni@gmail.com
+Vipul Shekhawat : vish092@gmail.com
+Danny Broudy    : daniel.broudy@gmail.com
+Peregrine Badger: pbadger@college.harvard.edu
+</code></pre>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+    
+  </body>
+</html>
