@@ -51,19 +51,34 @@ object (this)
    *  we may need some sort of a line like this ! *) 
     val mutable data           = d
     val mutable piece_size     = ps
-    val mutable total_pieces   = (String.length d) / ps
+    val mutable diced_data     = Array.make 1 []
+
+    val mutable total_pieces   = 
+       let length = String.length d in
+       if ((length mod ps) = 0) 
+         then (length/ps)
+         else ((length/ps) + 1)
+    
     val mutable seed           = self_init (); int 10000
     val mutable droplet_pieces = 0
 
+    initializer  
+        (diced_data <- (Array.make total_pieces []));
+        let intlst = self#string_to_intlist data 0 in
+        for (i = 0) to (total_pieces - 1) do
+          for (j = 0) to (piece_size - 1) do
+            List.nth intlst
+    
     method random_seed         = self_init (); seed <- int 10000; init seed
     
     method rand_droplet_pieces = droplet_pieces <- (int bound) + 1
     
-    method private string_to_intlist str counter : int string =
+    method private string_to_intlist str counter : int list =
         if (counter = String.length str)
           then []
-          else (int_of_char str.[counter] :: (string str (counter + 1))
-    
+          else 
+           (int_of_char str.[counter] :: (string_to_intlist str (counter + 1)))
+
     (* we may be able to abstract this out to create different distributions *)
     method get_piece           = (* int_of_char data.[int total_pieces]*) 
       let a = (int total_pieces) in 
