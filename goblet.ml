@@ -1,6 +1,6 @@
-Open Droplet
-Open Random
-Exception TODO
+open Droplet
+open Random
+exception TODO
 
 (* a function for printing and debugging *)
 let string_of_int_list (lst: int list) : string = 

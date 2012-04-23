@@ -1,5 +1,5 @@
 open Random;;
-open Droplet;;
+open String_droplet;;
 
 (* the fountain produces droplets according to the fountain code 
  * implementation chosen *)
@@ -34,9 +34,9 @@ object
 
     (* this uses the seed and data variables to fetch a random
        piece of the original file *)
-    method get_piece : int
+    method get_piece : int list
 
-    method private xor : int
+    method private xor : int list
 
     (* this generates a new random droplet object, using the above 
        methods and instance variables *)
@@ -46,7 +46,7 @@ end
 
 
 class lt_fountain (d: string) (ps: int) (bound : int) : fountain =
-object (this)
+object (self)
   (*   type droplet = lt_droplet
    *  we may need some sort of a line like this ! *) 
     val mutable data           = d
@@ -62,12 +62,8 @@ object (this)
     val mutable seed           = self_init (); int 10000
     val mutable droplet_pieces = 0
 
-    initializer  
-        (diced_data <- (Array.make total_pieces []));
-        let intlst = self#string_to_intlist data 0 in
-        for (i = 0) to (total_pieces - 1) do
-          for (j = 0) to (piece_size - 1) do
-            List.nth intlst
+    initializer
+        self#string_to_intlist piece_size data
     
     method random_seed         = self_init (); seed <- int 10000; init seed
     
@@ -84,22 +80,21 @@ object (this)
       let str_len = String.length str in 
         if str_len mod len = 0 then chopper_helper len str 0 (str_len)
         else 
-        chopper len (str^" ")
+            self#chopper len (str^" ")
    
 
     method private int_string (str:string) : int list =   
      let rec int_string_helper (str:string) (counter:int) : int list =
         if (counter = String.length str) 
           then []
-          else (int_of_char str.[counter] :: 
-                int_string_helper str (counter + 1))
+          else ((int_of_char str.[counter]) :: (int_string_helper str (counter + 1)))
      in 
-     int_string_helper str 0;;
+     int_string_helper str 0
    
-    method private string_to_intlist len str : int list list =
-      let list = this#chopper in
-      List.map (this#int_string) list
-
+    method private string_to_intlist len str : unit =
+      let lst = self#chopper piece_size data in
+      let lst2 = (List.map (self#int_string) lst) in
+      (diced_data <- (Array.of_list lst2))
 
 (*       if (counter = String.length str)
           then []
@@ -107,26 +102,26 @@ object (this)
            (int_of_char str.[counter] :: (string_to_intlist str (counter + 1)))
 *)
     (* we may be able to abstract this out to create different distributions *)
-    method get_piece           = (* int_of_char data.[int total_pieces]*) 
+    method get_piece = (* int_of_char data.[int total_pieces]*) 
       let a = (int total_pieces) in 
-      (Printf.printf "encoding#: %d \n" a); int_of_char data.[a] 
+     (Printf.printf "encoding#: %d \n" a); diced_data.(a) 
 
 
     (* not a public method *)
     method private xor         =
-        let rec help_xor (n:int) : int =
+        let rec help_xor (n:int) : int list =
 	        if (n > 1) 
-                then ((lxor) (this#get_piece) (help_xor (n-1)))
-	            else this#get_piece
+                then ( List.map2 (lxor) (self#get_piece) (help_xor (n-1)))
+	            else self#get_piece
         in
         help_xor droplet_pieces
 
-    method output_droplet    = this#random_seed; this#rand_droplet_pieces;
-                               new lt_droplet (char_of_int this#xor) 
+    method output_droplet    = self#random_seed; self#rand_droplet_pieces;
+                               new lt_droplet (self#xor) 
                                               (total_pieces)
                                               (seed)
     method output_droplet_list (n:int) : droplet list = 
-     if n > 0 then this#output_droplet::(this#output_droplet_list (n-1)) else []
+        if n > 0 then self#output_droplet::(self#output_droplet_list (n-1)) else []
 end
 
 (*
