@@ -73,12 +73,39 @@ object (this)
     
     method rand_droplet_pieces = droplet_pieces <- (int bound) + 1
     
-    method private string_to_intlist str counter : int list =
-        if (counter = String.length str)
+    method private chopper len str = 
+      let rec chopper_helper (len: int) (str:string)
+                             (place:int) (len_string:int) : string list = 
+     if place < len_string then 
+       (String.sub str place len)::
+             (chopper_helper len str (place+len) len_string)
+     else [] 
+       in 
+      let str_len = String.length str in 
+        if str_len mod len = 0 then chopper_helper len str 0 (str_len)
+        else 
+        chopper len (str^" ")
+   
+
+    method private int_string (str:string) : int list =   
+     let rec int_string_helper (str:string) (counter:int) : int list =
+        if (counter = String.length str) 
+          then []
+          else (int_of_char str.[counter] :: 
+                int_string_helper str (counter + 1))
+     in 
+     int_string_helper str 0;;
+   
+    method private string_to_intlist len str : int list list =
+      let list = this#chopper in
+      List.map (this#int_string) list
+
+
+(*       if (counter = String.length str)
           then []
           else 
            (int_of_char str.[counter] :: (string_to_intlist str (counter + 1)))
-
+*)
     (* we may be able to abstract this out to create different distributions *)
     method get_piece           = (* int_of_char data.[int total_pieces]*) 
       let a = (int total_pieces) in 
