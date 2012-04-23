@@ -59,6 +59,11 @@ object (this)
     
     method rand_droplet_pieces = droplet_pieces <- (int bound) + 1
     
+    method private string_to_intlist str counter : int string =
+        if (counter = String.length str)
+          then []
+          else (int_of_char str.[counter] :: (string str (counter + 1))
+    
     (* we may be able to abstract this out to create different distributions *)
     method get_piece           = (* int_of_char data.[int total_pieces]*) 
       let a = (int total_pieces) in 

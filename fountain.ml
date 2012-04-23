@@ -58,12 +58,11 @@ object (this)
     method random_seed         = self_init (); seed <- int 10000; init seed
     
     method rand_droplet_pieces = droplet_pieces <- (int bound) + 1
-    
+   
     (* we may be able to abstract this out to create different distributions *)
     method get_piece           = (* int_of_char data.[int total_pieces]*) 
       let a = (int total_pieces) in 
-      (Printf.printf "encoding#: %d \n" a); int_of_char data.[a] 
-
+      (Printf.printf "encoding#: %d \n" a); int_of_char data.[a]
 
     (* not a public method *)
     method private xor         =
