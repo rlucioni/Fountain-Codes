@@ -42,7 +42,7 @@ let rec transmit () : unit =
            (close_out out_channel))
       else ((g#get_droplet f#output_droplet);
            g#decode;
-           ignore(g#get_message); 
+           ignore(g#print_progress);
            transmit ()) ;;
 
 transmit () ;;

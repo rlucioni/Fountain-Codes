@@ -231,8 +231,8 @@ object (self)
 	 | hd:: tl -> raise TODO
      in
      List.iter (put) solved_metadrops;
-     Printf.printf "\nKNOWN MESSAGE: %s \n" message; message
-
+     Printf.printf "\033[KKNOWN MESSAGE: %s" message; message
+    
     method return_message : string = message 
 
     (* a way to see the other side  *)

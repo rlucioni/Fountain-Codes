@@ -144,8 +144,9 @@ object (self)
       let progress = solver 0 in
       if (progress) > 0 
         then(* self#remove_empties;*) let a = (counter + progress) in 
-            counter <- a; Printf.printf "Message partially reconstructed. \n" 
-        else Printf.printf "You must provide additional droplets. \n"
+            counter <- a; (*Printf.printf "Message partially reconstructed.
+            \n"*) 
+        else () (*Printf.printf "You must provide additional droplets. \n"*)
  
         
     (* removes duplicate pairs from the pieces list of a metadrop  *)
@@ -237,7 +238,7 @@ object (self)
 	 | hd:: tl -> raise TODO
      in
      List.iter put solved_metadrops;
-     Printf.printf "\nKNOWN MESSAGE: %s \n" message; message
+     Printf.printf "\033[KKNOWN MESSAGE: %s" message; message
     
     method return_message : string = message 
     
@@ -247,11 +248,11 @@ object (self)
     
     (* an early implementation of a progress printer *)
     method print_progress : unit  = 
-       Printf.printf "\n \n"; 
+       (*Printf.printf "\n \n"; 
        Printf.printf "RECONSTRUCTED MESSAGE: %s \n" message;
        Printf.printf "COUNT: %d \n" counter;
-       Printf.printf "TOTAL PIECES: %d \n" totalPieces;
-       Printf.printf "METADROPS CONSUMED: %d \n" 
+       Printf.printf "TOTAL PIECES: %d \n" totalPieces;*)
+       Printf.printf "\033[2K METADROPS CONSUMED: %d \r" 
                                                    (List.length all_metadrops); 
                                                    ()
 
