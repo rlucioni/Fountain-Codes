@@ -58,6 +58,9 @@ object
     (* return however much we have decoded of the original message *)
     method get_message : string 
 
+    (* just returns what we have of the message *)
+    method return_message : string
+
     (* prints: total pieces, all_metadrops, message and counter for debugging *)
     method print_progress : unit
 
@@ -235,6 +238,8 @@ object (self)
      in
      List.iter put solved_metadrops;
      Printf.printf "\nKNOWN MESSAGE: %s \n" message; message
+    
+    method return_message : string = message 
     
     (* a way to see the other side  *)
     method get_all_metadrops = all_metadrops

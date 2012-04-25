@@ -13,12 +13,9 @@ let output_destination = Sys.argv.(2)
 let piece_size = int_of_string Sys.argv.(3)
 let max_pieces = int_of_string Sys.argv.(4)
 
-(*
-let in_channel  = open_in input_file ;;
 let out_channel = open_out output_destination ;;
 
 flush out_channel;;
-*)
 
 (* read all the lines from a file, return a list of them as strings *)
 let rec input_lines inchan lines =
@@ -40,8 +37,10 @@ let g = new lt_goblet f#output_droplet max_pieces
 
 let rec transmit () : unit = 
     if g#check_complete
-      then g#print_progress
-      else ((g#get_droplet f#output_droplet); 
+      then (g#print_progress; 
+           (output_string out_channel g#return_message);
+           (close_out out_channel))
+      else ((g#get_droplet f#output_droplet);
            g#decode;
            ignore(g#get_message); 
            transmit ()) ;;

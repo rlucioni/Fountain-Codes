@@ -1,5 +1,5 @@
 let in_channel  = open_in  "lenna.jpg";;
-let out_channel = open_out "imagecp.jpg";;
+let out_channel = open_out "image_dump.jpg";;
 
 flush out_channel;;
 
