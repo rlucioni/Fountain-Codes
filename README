@@ -42,8 +42,7 @@ FILE MANIFEST
     test_dump,
     test_file   - files used/overwritten by md5test.sh for testing
 				
-    lenna.jpg,
-    lenna.png   - images for testing file I/O
+    lenna.jpg   - image for testing file I/O
 
     test_framework.ml,
     pretty_print.ml    - contain the CamelJockey testing framework
