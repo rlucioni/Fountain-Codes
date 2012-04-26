@@ -58,9 +58,6 @@ object
     (* return however much we have decoded of the original message *)
     method get_message : string 
 
-    (* just returns what we have of the message *)
-    method return_message : string
-
     (* prints: total pieces, all_metadrops, message and counter for debugging *)
     method print_progress : unit
 
@@ -239,12 +236,10 @@ object (self)
 	 | hd:: tl -> raise TODO
      in
      List.iter put solved_metadrops;
-     (*Printf.printf "\033[KKNOWN MESSAGE: %s" message;*) message
-    
-    method return_message : string =
-      let length = totalPieces * piece_size in
-      let length' = length - extra in
-      String.sub message 0 length'
+     (*Printf.printf "\033[KKNOWN MESSAGE: %s" message;*)
+     let length = totalPieces * piece_size in
+     let length' = length - extra in
+     String.sub message 0 length'
     
     (* a way to see the other side  *)
     method get_all_metadrops = all_metadrops
