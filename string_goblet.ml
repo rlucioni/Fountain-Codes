@@ -252,7 +252,7 @@ object (self)
        Printf.printf "RECONSTRUCTED MESSAGE: %s \n" message;
        Printf.printf "COUNT: %d \n" counter;
        Printf.printf "TOTAL PIECES: %d \n" totalPieces;*)
-       Printf.printf "\r\033[2KMETADROPS CONSUMED: %d" (List.length all_metadrops); 
+       Printf.printf "\rMETADROPS CONSUMED: %d" (List.length all_metadrops); 
        flush_all ()
 
 
