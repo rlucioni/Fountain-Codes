@@ -16,9 +16,8 @@ object (self)
       in
       helper 0 p p
 
-    method get_piece =
-      let a = (self#rand_poisson l) mod self#get_total_pieces in
-      self#get_diced_data.(a) 
+    method rand_droplet_pieces =
+      (self#rand_poisson l) mod self#get_total_pieces
 end
 
 class normal_fountain (m:float) (v:float) (d:string) (ps:int) (bound:int) : fountain =
@@ -36,9 +35,8 @@ object (self)
     method private rand_normal =
       m +. (sqrt v) *. self#rand_snormal() 
 
-    method get_piece =
-      let a = (int_of_float self#rand_normal) mod self#get_total_pieces in
-      self#get_diced_data.(a)
+    method rand_droplet_pieces =
+      (int_of_float self#rand_normal) mod self#get_total_pieces
 end
 
 (*
