@@ -229,7 +229,7 @@ object (self)
     let rec string_int (lst:int list) =
       match lst with
         | [] -> ""
-        | hd::tl -> (String.make 1 (char_of_int hd)) ^ string_int tl
+        | hd::tl -> (String.make 1 (char_of_int hd)) ^ (string_int tl)
     in
     let put (m:metadrop) : unit =  
        match m.pieces_list with
