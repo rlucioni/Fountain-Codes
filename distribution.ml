@@ -18,7 +18,7 @@ object (self)
 
     method get_piece =
       let a = (self#rand_poisson l) mod self#get_total_pieces in
-      (Printf.printf "encoding#: %d \n" a); self#get_diced_data.(a) 
+      self#get_diced_data.(a) 
 end
 
 class normal_fountain (m:float) (v:float) (d:string) (ps:int) (bound:int) : fountain =
@@ -38,7 +38,7 @@ object (self)
 
     method get_piece =
       let a = (int_of_float self#rand_normal) mod self#get_total_pieces in
-      (Printf.printf "encoding#: %d \n" a); self#get_diced_data.(a)
+      self#get_diced_data.(a)
 end
 
 (*
