@@ -38,7 +38,7 @@ let g = new lt_goblet f#output_droplet max_pieces
 let rec transmit () : unit = 
     if g#check_complete
       then (g#print_progress; 
-           (output_string out_channel g#return_message);
+           (output_string out_channel g#get_message);
            (close_out out_channel);
            (print_string "\n"))
       else ((g#get_droplet f#output_droplet);
