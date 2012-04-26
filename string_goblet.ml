@@ -86,13 +86,13 @@ object (self)
     val mutable totalPieces = d#get_contents.total_pieces
     (* initiates the message to a string of stars of the correct length
      * for fun  *)
-    val mutable message = String.make (d#get_contents.total_pieces * (List.length d#get_contents.data)) '_'
+    val mutable message = String.make (d#get_contents.total_pieces * (List.length d#get_contents.data)) '2'
     val mutable all_metadrops = []
     val mutable solved_metadrops = []
     val mutable counter = 0
     val mutable piece_size = List.length d#get_contents.data
     val mutable extra = d#get_contents.extra
-    
+
     (* droplet -> metadrop
      * decodes the seed information *)
     method private get_metadrop (d:droplet) (bound:int)  : metadrop = 
