@@ -30,20 +30,20 @@ FILE MANIFEST
     io_operations.ml     - similar to other operations files, this file allows
                            encoding and decoding of an arbitrary file
 
-	probability.ml       - contains additional probability distributions
+    probability.ml       - contains additional probability distributions
 
     copier.ml            - a test of OCaml's I/O features; used to demo
 						   cloning of a file
 		
-	run.sh        - bash script for running io_operations with given arguments
+    run.sh        - bash script for running io_operations with given arguments
 	
-	md5test.sh    - compiles io_operations, creates a test file with 1000 
-	    			bytes from /dev/random, runs that file through 
-	                io_operations, generates and compares MD5 hashes of the
-					input and output, and informs you of the result
+    md5test.sh    - compiles io_operations, creates a test file with 1000
+                    bytes from /dev/random, runs that file through 
+                    io_operations, generates and compares MD5 hashes of the	
+                    input and output, and informs you of the result
 	
-	test_dump,
-	test_file     - files used/overwritten by md5test.sh for testing
+    test_dump,
+    test_file     - files used/overwritten by md5test.sh for testing
 				
     experiment.ml        - sandbox for testing new ideas
 
