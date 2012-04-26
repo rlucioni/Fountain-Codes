@@ -58,6 +58,9 @@ object
     (* return however much we have decoded of the original message *)
     method get_message : string 
 
+    (* just returns what we have of the message *)
+    method return_message : string
+
     (* prints: total pieces, all_metadrops, message and counter for debugging *)
     method print_progress : unit
 
@@ -141,8 +144,9 @@ object (self)
       let progress = solver 0 in
       if (progress) > 0 
         then(* self#remove_empties;*) let a = (counter + progress) in 
-            counter <- a; Printf.printf "Message partially reconstructed. \n" 
-        else Printf.printf "You must provide additional droplets. \n"
+            counter <- a; (*Printf.printf "Message partially reconstructed.
+            \n"*) 
+        else () (*Printf.printf "You must provide additional droplets. \n"*)
  
         
     (* removes duplicate pairs from the pieces list of a metadrop  *)
@@ -220,7 +224,7 @@ object (self)
 
     (* puts the solved singles into the message 
      * prints newest message *)
-    method get_message: string = 
+    method get_message: string =
     let rec string_int (lst:int list) =
       match lst with
         | [] -> ""
@@ -234,7 +238,9 @@ object (self)
 	 | hd:: tl -> raise TODO
      in
      List.iter put solved_metadrops;
-     Printf.printf "\nKNOWN MESSAGE: %s \n" message; message
+     Printf.printf "\033[KKNOWN MESSAGE: %s" message; message
+    
+    method return_message : string = message 
     
     (* a way to see the other side  *)
     method get_all_metadrops = all_metadrops
@@ -242,13 +248,12 @@ object (self)
     
     (* an early implementation of a progress printer *)
     method print_progress : unit  = 
-       Printf.printf "\n \n"; 
+       (*Printf.printf "\n \n"; 
        Printf.printf "RECONSTRUCTED MESSAGE: %s \n" message;
        Printf.printf "COUNT: %d \n" counter;
-       Printf.printf "TOTAL PIECES: %d \n" totalPieces;
-       Printf.printf "METADROPS CONSUMED: %d \n" 
-                                                   (List.length all_metadrops); 
-                                                   ()
+       Printf.printf "TOTAL PIECES: %d \n" totalPieces;*)
+       Printf.printf "\rMETADROPS CONSUMED: %d" (List.length all_metadrops); 
+       flush_all ()
 
 
 

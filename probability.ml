@@ -1,29 +1,46 @@
-open Droplet
-open Fountain
-open Goblet
+open String_fountain
+open String_droplet
+open String_goblet
+open Distribution ;;
 
+if (Array.length Sys.argv) <> 2
+then failwith "Correct usage: ./probability string"
+else ()
 
+let message = Sys.argv.(1) ;;
 
-let rand_poisson (l:float) =
-  let e = 2.71828183 in
-  let u = Random.self_init(); Random.float 1. in
-  let p = e ** (-.l) in
-  let rec helper i p f =
-    if u < f then i
-    else let p = (l *. p) /. (float_of_int (i + 1)) in
-	 let f = f +. p in
-	 helper (i+1) p f
-  in
-  helper 0 p p
+Printf.printf "Piece Size: " ;;
+let piece_size = read_int() ;;
 
-let rand_snormal () =
-  Random.self_init();
-  let u = Random.float 2. -. 1. in
-  let v = Random.float 2. -. 1. in
-  let s = (u ** 2.) +. (v ** 2.) in
-  if (Random.float 1.) < 0.5
-  then u *. sqrt (-.2. *. log s /. s)
-  else v *. sqrt (-.2. *. log s /. s)
+Printf.printf "Choose a distribution (pois, norm, or unif): " ;;
+let distro = read_line() ;;
 
-let rand_normal (mean:float) (var:float) =
-  mean +. (sqrt var) *. rand_snormal()
+let f =
+match distro with
+  | "unif" -> (Printf.printf "Max XOR'd Pieces: ";
+    let max_pieces = read_int() in
+    new lt_fountain message piece_size max_pieces)
+  | "pois" -> (Printf.printf "Mean: ";
+    let l = read_float() in
+    new poisson_fountain l message piece_size 1)
+  | "norm" -> (Printf.printf "Mean: ";
+    let m = read_float() in
+    Printf.printf "Variance: ";
+    let v = read_float() in
+    new normal_fountain m v message piece_size 1)
+  | _ -> failwith "Not a valid distribution." ;;
+
+f#output_droplet
+(*
+let g = new lt_goblet f#output_droplet max_pieces ;;
+
+let rec transmit () : unit = 
+    if g#check_complete
+      then g#print_progress
+      else ((g#get_droplet f#output_droplet);
+           g#decode;
+           ignore(g#get_message);
+           transmit ()) 
+
+transmit () 
+*)

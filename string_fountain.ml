@@ -42,6 +42,10 @@ object
        methods and instance variables *)
     method output_droplet : droplet
     method output_droplet_list : int -> droplet list
+
+    method private get_diced_data : int list array
+
+    method private get_total_pieces : int
 end
 
 
@@ -104,7 +108,7 @@ object (self)
     (* we may be able to abstract this out to create different distributions *)
     method get_piece = (* int_of_char data.[int total_pieces]*) 
       let a = (int total_pieces) in 
-     (Printf.printf "encoding#: %d \n" a); diced_data.(a) 
+     (*(Printf.printf "encoding#: %d \n" a);*) diced_data.(a) 
 
 
     (* not a public method *)
@@ -122,12 +126,18 @@ object (self)
                                               (seed)
     method output_droplet_list (n:int) : droplet list = 
         if n > 0 then self#output_droplet::(self#output_droplet_list (n-1)) else []
+
+    method private get_diced_data = diced_data
+
+    method private get_total_pieces = total_pieces
 end
 
 (*
 let _ = c#get_droplet (a#output_droplet);;
 
 let _ = c#decode;;
+
+
 
 let _ = c#get_message;;
 *)

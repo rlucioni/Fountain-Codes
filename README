@@ -6,7 +6,7 @@ This is an implementation of a fountain code algorithm written in OCaml.
 
 ********************************************************************************
 
-File Manifest
+FILE MANIFEST
     droplet.ml    - defines the Droplet, containing a seed, the XOR'd data, and 
                     the total number of pieces
     
@@ -30,12 +30,21 @@ File Manifest
     io_operations.ml     - similar to other operations files, this file allows
                            encoding and decoding of an arbitrary file
 
-    copier.ml            - a test of OCaml's I/O features; used to create a 
-                           copy of a file whose name is hardcoded in a hardcoded
-                           destination
+    probability.ml       - contains additional probability distributions
 
-    imagecp.jpg          - a dump for copier.ml; useful in testing
-
+    copier.ml            - a test of OCaml's I/O features; used to demo
+						   cloning of a file
+		
+    run.sh        - bash script for running io_operations with given arguments
+	
+    md5test.sh    - compiles io_operations, creates a test file with 1000
+                    bytes from /dev/random, runs that file through 
+                    io_operations, generates and compares MD5 hashes of the	
+                    input and output, and informs you of the result
+	
+    test_dump,
+    test_file     - files used/overwritten by md5test.sh for testing
+				
     experiment.ml        - sandbox for testing new ideas
 
     lenna.jpg,
