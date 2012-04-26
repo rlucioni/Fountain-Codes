@@ -1,4 +1,4 @@
-type droplet_record = {data : int list; total_pieces : int; seed : int}
+type droplet_record = {data : int list; total_pieces : int; seed : int; extra : int}
 
 (* the Droplet, containing a seed and the XOR'd data *)
 class type droplet =
@@ -11,6 +11,9 @@ object
                  
     (* pseduorandomly generated seed for telling which pieces were used *)
     val mutable seed : int
+    
+    (* indicates how many extra chars are at the end of the total file *)
+    val mutable extra : int
                          
     (* this converts the data, total_pieces, and seed into a string *)
     (*method to_string : string*)
@@ -20,11 +23,12 @@ object
 end
 
 
-class lt_droplet (d: int list) (t: int) (s: int) : droplet =
+class lt_droplet (d: int list) (t: int) (s: int) (e:int) : droplet =
 object
     val mutable data         = d
     val mutable total_pieces = t
     val mutable seed         = s
+    val mutable extra        = e
     
     (*
     (* still need to implement printing for testing *)
@@ -34,5 +38,5 @@ object
         ", Total pieces: " ^ (string_of_int total_pieces) ^ ", Seed: " ^
         (string_of_int seed) ^ "}" *)
                                                                     
-    method get_contents = {data = data; total_pieces = total_pieces; seed = seed}
+    method get_contents = {data = data; total_pieces = total_pieces; seed = seed; extra = extra}
 end

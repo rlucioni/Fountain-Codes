@@ -91,6 +91,7 @@ object (self)
     val mutable solved_metadrops = []
     val mutable counter = 0
     val mutable piece_size = List.length d#get_contents.data
+    val mutable extra = d#get_contents.extra
     
     (* droplet -> metadrop
      * decodes the seed information *)
@@ -240,7 +241,10 @@ object (self)
      List.iter put solved_metadrops;
      Printf.printf "\033[KKNOWN MESSAGE: %s" message; message
     
-    method return_message : string = message 
+    method return_message : string =
+      let length = totalPieces * piece_size in
+      let length' = length - extra in
+      String.sub message 0 length'
     
     (* a way to see the other side  *)
     method get_all_metadrops = all_metadrops
