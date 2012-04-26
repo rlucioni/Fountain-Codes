@@ -42,6 +42,8 @@ object
        methods and instance variables *)
     method output_droplet : droplet
     method output_droplet_list : int -> droplet list
+
+    method private get_diced_data : int list array
 end
 
 
@@ -122,6 +124,8 @@ object (self)
                                               (seed)
     method output_droplet_list (n:int) : droplet list = 
         if n > 0 then self#output_droplet::(self#output_droplet_list (n-1)) else []
+
+    method private get_diced_data = diced_data
 end
 
 (*
