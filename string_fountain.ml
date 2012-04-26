@@ -106,7 +106,7 @@ object (self)
     (* we may be able to abstract this out to create different distributions *)
     method get_piece = (* int_of_char data.[int total_pieces]*) 
       let a = (int total_pieces) in 
-     (Printf.printf "encoding#: %d \n" a); diced_data.(a) 
+     (*(Printf.printf "encoding#: %d \n" a);*) diced_data.(a) 
 
 
     (* not a public method *)
@@ -132,6 +132,8 @@ end
 let _ = c#get_droplet (a#output_droplet);;
 
 let _ = c#decode;;
+
+
 
 let _ = c#get_message;;
 *)

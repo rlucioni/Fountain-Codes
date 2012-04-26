@@ -13,26 +13,37 @@ let output_destination = Sys.argv.(2)
 let piece_size = int_of_string Sys.argv.(3)
 let max_pieces = int_of_string Sys.argv.(4)
 
-let in_channel  = open_in input_file ;;
 let out_channel = open_out output_destination ;;
 
 flush out_channel;;
 
-let rec file_to_string () : string =
-    (input_line in_channel) ^ (file_to_string ())
+(* read all the lines from a file, return a list of them as strings *)
+let rec input_chars inchan chars =
+    try
+      input_chars inchan ((String.make 1 (input_char inchan)) :: chars)
+    with End_of_file -> List.rev chars
 
-let message = file_to_string ()
+(* condense the lines of a file into one big string *)
+let condense_chars file =
+    let ch       = open_in file in
+    let chars    = input_chars ch [] in
+    let condense = String.concat "" chars in
+      (close_in ch); condense
 
+let message = condense_chars input_file
 
 let f = new lt_fountain message piece_size max_pieces
 let g = new lt_goblet f#output_droplet max_pieces
 
 let rec transmit () : unit = 
     if g#check_complete
-      then g#print_progress
-      else ((g#get_droplet f#output_droplet); 
+      then (g#print_progress; 
+           (output_string out_channel g#return_message);
+           (close_out out_channel);
+           (print_string "\n"))
+      else ((g#get_droplet f#output_droplet);
            g#decode;
-           ignore(g#get_message); 
+           ignore(g#print_progress);
            transmit ()) ;;
 
 transmit () ;;
