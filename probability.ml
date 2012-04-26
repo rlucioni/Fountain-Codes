@@ -1,10 +1,10 @@
 open String_fountain
 open String_droplet
-open String_goblet 
+open String_goblet
 open Distribution ;;
 
 if (Array.length Sys.argv) <> 2
-then failwith "Correct usage: ./string_operations string"
+then failwith "Correct usage: ./probability string"
 else ()
 
 let message = Sys.argv.(1) ;;
@@ -30,6 +30,8 @@ match distro with
     let v = read_float() in
     new normal_fountain m v message piece_size max_pieces)
   | _ -> failwith "Not a valid distribution." ;;
+
+f#output_droplet#get_contents
 (*
 let g = new lt_goblet f#output_droplet max_pieces ;;
 

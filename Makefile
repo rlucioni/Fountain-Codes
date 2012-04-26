@@ -1,4 +1,4 @@
-all: operations
+all: operations copier probability
 
 FILES=string_droplet.ml string_fountain.ml operations.ml
 
@@ -21,11 +21,12 @@ copier:
 	ocamlc -o copier copier.cmo
 
 probability:
-	ocamlc -c distribution.ml
 	ocamlc -c string_droplet.ml
 	ocamlc -c string_fountain.ml
 	ocamlc -c string_goblet.ml
-	ocamlc -o probability distribution.cmo string_droplet.cmo string_fountain.cmo string_goblet.cmo
+	ocamlc -c distribution.ml
+	ocamlc -c probability.ml
+	ocamlc -o probability string_droplet.cmo string_fountain.cmo string_goblet.cmo distribution.cmo probability.cmo
 
 clean:
 	rm -f *.cmo *.cmi operations string_operations io_operations copier probability

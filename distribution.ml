@@ -1,4 +1,4 @@
-open String_fountain ;;
+open String_fountain
 
 class poisson_fountain (l:float) (d:string) (ps:int) (bound:int) : fountain =
 object (self)
@@ -17,7 +17,7 @@ object (self)
       helper 0 p p
 
     method get_piece =
-      let a = (self#rand_poisson l) in
+      let a = (self#rand_poisson l) mod self#get_total_pieces in
       (Printf.printf "encoding#: %d \n" a); self#get_diced_data.(a) 
 end
 
@@ -37,7 +37,7 @@ object (self)
       m +. (sqrt v) *. self#rand_snormal() 
 
     method get_piece =
-      let a = int_of_float self#rand_normal in
+      let a = (int_of_float self#rand_normal) mod self#get_total_pieces in
       (Printf.printf "encoding#: %d \n" a); self#get_diced_data.(a)
 end
 

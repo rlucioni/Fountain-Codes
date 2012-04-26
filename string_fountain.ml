@@ -44,6 +44,8 @@ object
     method output_droplet_list : int -> droplet list
 
     method private get_diced_data : int list array
+
+    method private get_total_pieces : int
 end
 
 
@@ -126,6 +128,8 @@ object (self)
         if n > 0 then self#output_droplet::(self#output_droplet_list (n-1)) else []
 
     method private get_diced_data = diced_data
+
+    method private get_total_pieces = total_pieces
 end
 
 (*
