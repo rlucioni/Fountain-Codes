@@ -1,6 +1,6 @@
-open String_fountain
-open String_droplet
-open String_goblet
+open Fountain
+open Droplet
+open Goblet
 open Distribution ;;
 
 if (Array.length Sys.argv) <> 2
