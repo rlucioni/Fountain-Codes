@@ -65,6 +65,7 @@ object (self)
     
     val mutable seed           = self_init (); int 10000
     val mutable droplet_pieces = 0
+    val mutable extra = 0
 
     initializer
         self#string_to_intlist piece_size data
@@ -79,12 +80,12 @@ object (self)
      if place < len_string then 
        (String.sub str place len)::
              (chopper_helper len str (place+len) len_string)
-     else [] 
+     else []
        in 
       let str_len = String.length str in 
         if str_len mod len = 0 then chopper_helper len str 0 (str_len)
         else 
-            self#chopper len (str^" ")
+            (extra <- (extra + 1); self#chopper len (str^" "))
    
 
     method private int_string (str:string) : int list =   
@@ -123,7 +124,7 @@ object (self)
     method output_droplet    = self#random_seed; self#rand_droplet_pieces;
                                new lt_droplet (self#xor) 
                                               (total_pieces)
-                                              (seed)
+                                              (seed) (extra)
     method output_droplet_list (n:int) : droplet list = 
         if n > 0 then self#output_droplet::(self#output_droplet_list (n-1)) else []
 
