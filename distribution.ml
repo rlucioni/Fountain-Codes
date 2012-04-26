@@ -1,4 +1,4 @@
-open String_fountain
+open Fountain
 
 class poisson_fountain (l:float) (d:string) (ps:int) (bound:int) : fountain =
 object (self)
