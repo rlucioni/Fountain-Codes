@@ -1,6 +1,6 @@
 #!/bin/sh
 
-make
+make operations
 echo "CREATING TEST FILE..."
 dd if=/dev/random of=test_file bs=1000 count=1
 echo "RUNNING LT CODE OPERATIONS..."

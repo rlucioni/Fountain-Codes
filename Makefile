@@ -12,9 +12,8 @@ operations: $(FILES)
 	ocamlc -c droplet.ml
 	ocamlc -c fountain.ml
 	ocamlc -c goblet.ml
-	ocamlc -c distribution.ml
-	ocamlc -c probability.ml
-	ocamlc -o io_operations pretty_print.cmo test_framework.cmo string_droplet.cmo string_fountain.cmo string_goblet.ml io_operations.ml distribution.cmo probability.cmo
+	ocamlc -c io_operations.ml
+	ocamlc -o io_operations pretty_print.cmo test_framework.cmo string_droplet.cmo string_fountain.cmo string_goblet.cmo io_operations.cmo
 
 copier: 
 	ocamlc -c copier.ml
