@@ -17,61 +17,56 @@ FILE MANIFEST
                     the original data. This takes a droplet (seed, the data to 
                     be decoded, and the total number of pieces)
 
-    operations.ml - contains actual usage of our droplet, fountain, and goblet 
-                    classes - hence "operations"
+    operations.ml - allows encoding and decoding of an arbitrary string, passed
+                    as an argument along with a piece size and a maximum number 
+                    of pieces; compile to run
 
-    string_droplet.ml,
-    string_fountain.ml,
-    string_goblet.ml,
-    string_operations.ml - same as above, except implemented such that an 
-                           arbitrary piece size can be designated when breaking 
-                           up the data and building droplets
+    io_operations.ml - allows encoding and decoding of an arbitrary file; the
+                       file is passed as an argument along with an output
+                       destination, a piece size, and a maximum number of
+                       pieces; compile to run
 
-    io_operations.ml     - similar to other operations files, this file allows
-                           encoding and decoding of an arbitrary file
+    probability.ml   - contains additional probability distributions; compile
+                       to run
 
-    probability.ml       - contains additional probability distributions
-
-    copier.ml            - a test of OCaml's I/O features; used to demo
-						   cloning of a file
+    copier.ml        - a test of OCaml's I/O features; used to demo cloning of 
+                       a file; compile to run
 		
-    run.sh        - bash script for running io_operations with given arguments
+    run.sh      - bash script for running io_operations with given arguments
 	
-    md5test.sh    - compiles io_operations, creates a test file with 1000
-                    bytes from /dev/random, runs that file through 
-                    io_operations, generates and compares MD5 hashes of the	
-                    input and output, and informs you of the result
+    md5test.sh  - compiles io_operations, creates a test file with 1000
+                  bytes from /dev/random, runs that file through 
+                  io_operations, generates and compares MD5 hashes of the	
+                  input and output, and informs you of the result
 	
     test_dump,
-    test_file     - files used/overwritten by md5test.sh for testing
+    test_file   - files used/overwritten by md5test.sh for testing
 				
-    experiment.ml        - sandbox for testing new ideas
-
     lenna.jpg,
-    lenna.png            - images for testing file I/O
+    lenna.png   - images for testing file I/O
 
     test_framework.ml,
-    pretty_print.ml      - contain the CamelJockey testing framework
-
-
+    pretty_print.ml    - contain the CamelJockey testing framework
 
 OPERATING INSTRUCTIONS
-To run, compile first, and then, from the command line:
+To run on a file, compile io_operations and then from the command line:
 
-./string_operations "message" piece_size max_pieces
+./io_operations filename output_destination piece_size max_pieces
 
 
 KNOWN BUGS/INEFFICIENCIES
-io_operations compiles but overflows upon execution
-
 The math currently being used in Goblet is sub-optimal and stands to be improved
 by allowing the program the recognize when it can XOR immediately, instead of
 waiting for a droplet containing a single piece of data. 
 
-Duplicate pieces may appear in a single droplet. These duplicate do not provide
-any additional information.
+RESOLVED - io_operations corrupts input data
 
-When you designated a piece size larger than the input message, spaces will be
-added to your message until it divides evenly by the piece size you have given.
-This also happens any time the message does not divide cleanly by the piece
-size given. This is expected behavior, but can be improved.
+RESOLVED - Duplicate pieces may appear in a single droplet. These duplicate do 
+not provide any additional information.
+
+RESOLVED - io_operations compiles but overflows on execution
+
+RESOLVED - When you designated a piece size larger than the input message, 
+spaces will be added to your message until it divides evenly by the piece size 
+you have given. This also happens any time the message does not divide cleanly 
+by the piece size given. This is expected behavior, but can be improved.

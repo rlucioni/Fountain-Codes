@@ -1,5 +1,5 @@
 open Random;;
-open String_droplet;;
+open Droplet;;
 
 (* the fountain produces droplets according to the fountain code 
  * implementation chosen *)

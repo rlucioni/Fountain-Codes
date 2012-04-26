@@ -1,4 +1,4 @@
-open String_droplet
+open Droplet
 open Random
 exception TODO
 
@@ -251,7 +251,7 @@ object (self)
        Printf.printf "RECONSTRUCTED MESSAGE: %s \n" message;
        Printf.printf "COUNT: %d \n" counter;
        Printf.printf "TOTAL PIECES: %d \n" totalPieces;*)
-       Printf.printf "\rMETADROPS CONSUMED: %d" (List.length all_metadrops); 
+       Printf.printf "\rMETADROPS CONSUMED: %d" (List.length all_metadrops);
        flush_all ()
 
 
