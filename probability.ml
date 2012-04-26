@@ -12,26 +12,25 @@ let message = Sys.argv.(1) ;;
 Printf.printf "Piece Size: " ;;
 let piece_size = read_int() ;;
 
-Printf.printf "Max XOR'd Pieces: " ;;
-let max_pieces = read_int() ;;
-
 Printf.printf "Choose a distribution (pois, norm, or unif): " ;;
 let distro = read_line() ;;
 
 let f =
 match distro with
-  | "unif" -> new lt_fountain message piece_size max_pieces
+  | "unif" -> (Printf.printf "Max XOR'd Pieces: ";
+    let max_pieces = read_int() in
+    new lt_fountain message piece_size max_pieces)
   | "pois" -> (Printf.printf "Mean: ";
     let l = read_float() in
-    new poisson_fountain l message piece_size max_pieces)
+    new poisson_fountain l message piece_size 1)
   | "norm" -> (Printf.printf "Mean: ";
     let m = read_float() in
     Printf.printf "Variance: ";
     let v = read_float() in
-    new normal_fountain m v message piece_size max_pieces)
+    new normal_fountain m v message piece_size 1)
   | _ -> failwith "Not a valid distribution." ;;
 
-f#output_droplet#get_contents
+f#output_droplet
 (*
 let g = new lt_goblet f#output_droplet max_pieces ;;
 

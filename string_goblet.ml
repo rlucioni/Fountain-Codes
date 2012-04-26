@@ -224,7 +224,7 @@ object (self)
 
     (* puts the solved singles into the message 
      * prints newest message *)
-    method get_message: string = 
+    method get_message: string =
     let rec string_int (lst:int list) =
       match lst with
         | [] -> ""
