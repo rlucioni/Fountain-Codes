@@ -30,7 +30,13 @@ match distro with
     new normal_fountain m v message piece_size 1)
   | _ -> failwith "Not a valid distribution." ;;
 
-f#output_droplet
+let g =
+match distro with
+  | "unif" -> new lt_goblet f#output_droplet f#get_bound
+  | "pois" -> new poisson_goblet f#get_mean f#output_droplet 1
+  | "norm" -> new normal_goblet f#get_mean f#get_var f#output_droplet 1
+  | _ -> failwith "Not a valid distribution."
+
 (*
 let g = new lt_goblet f#output_droplet max_pieces ;;
 

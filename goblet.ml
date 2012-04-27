@@ -76,6 +76,8 @@ object
     method get_solved_singles: metadrop list
   (*  method singlesKnockout: metadrop list -> unit *)
     method remove_empties : unit
+    (* returns the totalPieces instance variable *)
+    method get_total_pieces : int
 end
 
 class lt_goblet (d: droplet) (bound: int) : goblet =
@@ -92,14 +94,14 @@ object (self)
 
     (* droplet -> metadrop
      * decodes the seed information *)
-    method private get_metadrop (d:droplet) (bound:int)  : metadrop = 
+    method private get_metadrop (d:droplet) : metadrop = 
       let drop = d#get_contents in 
       let seed = drop.seed in 
        (*Char.escaped changes a char to a string this is for if we want to 
-        * encode with string later  *) 
+        * encode with string later  *)
       let contents =(* Char.escaped*) (drop.data) in
      (* let total_pieces = drop.total_pieces *)
-      init seed; let num_chunks = (int bound) +1 in 
+      init seed; let num_chunks = self#get_num_chunks in 
 	 let rec get_int_list (n:int) : int list = 
           ( if n > 1  then int totalPieces :: get_int_list (n-1)
            else [(int totalPieces)] )
@@ -107,11 +109,13 @@ object (self)
       self#metadrop_fixer {number_chunks = num_chunks; 
                            pieces_list = (get_int_list num_chunks);
                            contents}
+
+    method private get_num_chunks = (int bound) + 1
     
-    (* adds a droplet to the goblet 
+    (* adds a droplet to the goblet
      *converts a droplet to a metadrops and adds it to all_metadrops *)
     method get_droplet (d: droplet) : unit = 
-      let metad = (self#get_metadrop d bound) in 
+      let metad = (self#get_metadrop d) in 
      all_metadrops <- (metad::all_metadrops);
      ()
      
@@ -271,5 +275,7 @@ object (self)
         counter = " ^ string_of_int counter ^ "\n"
  *)
     method check_complete : bool = counter = totalPieces
+
+    method get_total_pieces = totalPieces
     
 end

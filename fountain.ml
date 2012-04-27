@@ -50,6 +50,10 @@ object
     method private get_diced_data : int list array
 
     method private get_total_pieces : int
+
+    method get_mean : float
+    method get_var : float
+    method get_bound : int
 end
 
 
@@ -138,6 +142,10 @@ object (self)
     method private get_diced_data = diced_data
 
     method private get_total_pieces = total_pieces
+
+    method get_mean = 0.
+    method get_var = 0.
+    method get_bound = bound
 end
 
 (*
