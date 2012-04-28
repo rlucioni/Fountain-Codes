@@ -1,11 +1,11 @@
 (* file will contain file I/O and CamelJockey testing suite *)
 open Test_framework
-open String_droplet
-open String_fountain
-open String_goblet;;
+open Droplet
+open Fountain
+open Goblet;;
 
 if (Array.length Sys.argv) <> 4
-then failwith "Usage: ./string_operations string piece_size max_pieces"
+then failwith "Usage: ./operations string piece_size max_pieces"
 else ()
 
 let message = Sys.argv.(1)
@@ -17,7 +17,7 @@ let g = new lt_goblet f#output_droplet max_pieces
 
 let rec transmit () : unit = 
     if g#check_complete
-      then g#print_progress
+      then (g#print_progress; print_string "\n")
       else ((g#get_droplet f#output_droplet); 
            g#decode;
            ignore(g#get_message); 

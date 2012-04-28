@@ -30,17 +30,29 @@ match distro with
     new normal_fountain m v message piece_size 1)
   | _ -> failwith "Not a valid distribution." ;;
 
-f#output_droplet
-(*
-let g = new lt_goblet f#output_droplet max_pieces ;;
+let g =
+match distro with
+  | "unif" -> new lt_goblet f#output_droplet f#get_bound
+  | "pois" -> new poisson_goblet f#get_mean f#output_droplet 1
+  | "norm" -> new normal_goblet f#get_mean f#get_var f#output_droplet 1
+  | _ -> failwith "Not a valid distribution."
 
-let rec transmit () : unit = 
+let n = Printf.printf "# times to run: "; read_int() ;;
+
+let rec transmit () : int = 
     if g#check_complete
-      then g#print_progress
+      then g#num_used
       else ((g#get_droplet f#output_droplet);
            g#decode;
            ignore(g#get_message);
-           transmit ()) 
+           transmit ()) ;;
 
-transmit () 
-*)
+let rec tester lst n : int list =
+  if n = 0 then lst else tester (transmit()::lst) (n-1)
+
+let rec stringify lst : string =
+  match lst with
+    | [] -> ""
+    | hd::tl -> string_of_int hd ^ "," ^ (stringify tl) ;;
+
+print_string (stringify (tester [] n))

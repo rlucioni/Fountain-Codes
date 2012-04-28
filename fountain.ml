@@ -1,5 +1,9 @@
 open Random;;
+<<<<<<< HEAD
 (*open String_droplet;;*)
+=======
+open Droplet;;
+>>>>>>> 78e9275be4393093ad0a3825e9c41a890ee28b7a
 
 (* the fountain produces droplets according to the fountain code 
  * implementation chosen *)
@@ -50,6 +54,10 @@ object
     method private get_diced_data : int list array
 
     method private get_total_pieces : int
+
+    method get_mean : float
+    method get_var : float
+    method get_bound : int
 end
 
 
@@ -138,6 +146,10 @@ object (self)
     method private get_diced_data = diced_data
 
     method private get_total_pieces = total_pieces
+
+    method get_mean = 0.
+    method get_var = 0.
+    method get_bound = bound
 end
 
 (*

@@ -30,13 +30,5 @@ object
     val mutable seed         = s
     val mutable extra        = e
     
-    (*
-    (* still need to implement printing for testing *)
-    method to_string : string =
-        "{Data :" ^ data
-(*(String.concat "" (List.map (string_of_int data)))*) ^ 
-        ", Total pieces: " ^ (string_of_int total_pieces) ^ ", Seed: " ^
-        (string_of_int seed) ^ "}" *)
-                                                                    
     method get_contents = {data = data; total_pieces = total_pieces; seed = seed; extra = extra}
 end
