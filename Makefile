@@ -8,11 +8,6 @@ operations:
 	ocamlc -c operations.ml
 	ocamlc -o operations droplet.cmo fountain.cmo goblet.cmo operations.cmo
 
-copier: 
-	@echo "COMPILING..."
-	ocamlc -c copier.ml
-	ocamlc -o copier copier.cmo
-
 probability:
 	@echo "COMPILING..."
 	ocamlc -c droplet.ml
