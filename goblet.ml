@@ -223,51 +223,67 @@ object (self)
             helper tl 
       in helper (solvedSingles)
    
-   method private meta_simplify (m1:metadrop) (m2:metadrop) : metadrop =
-     if m1.pieces_list = [] then m2 else if m2.pieces_list = [] then m1 else
-       if m1.pieces_list = m2.pieces_list then m1 else 
-         let len1 = List.length m1.pieces_list in 
-         let len2 = List.length m2.pieces_list in 
-         let m3 = self#meta_d_xor m1 m2 in 
-         let len3 = List.length m3.pieces_list in 
-        if (min len3 len2) = len3 && (min len3 len1) = len3 then m3 
-		 else if (min len1 len2) = len1 then m1 else m2 
+
+    method private meta_simplify (m1:metadrop) (m2:metadrop) : metadrop =
+      if m1.pieces_list = [] 
+        then m2 
+        else 
+          if m2.pieces_list = [] 
+            then m1 
+            else
+             if m1.pieces_list = m2.pieces_list 
+               then m1 
+               else 
+                 let len1 = List.length m1.pieces_list in 
+                 let len2 = List.length m2.pieces_list in 
+                 let m3   = self#meta_d_xor m1 m2      in 
+                 let len3 = List.length m3.pieces_list in 
+                 if (min len3 len2) = len3 && (min len3 len1) = len3 
+                   then m3 
+		           else 
+                     if (min len1 len2) = len1 
+                       then m1 
+                       else m2 
    
 
-   method remove_empties : unit = 
-     let rec helper (list : metadrop list) : metadrop list = 
+    method remove_empties : unit = 
+      let rec helper (list : metadrop list) : metadrop list = 
         match list with
-	  | [] -> []
-	  | hd::[] -> if hd.number_chunks = 0 then [] else [hd]
-	  | hd:: tl -> if (List.hd tl).number_chunks = 0 
-                       then helper (hd::(List.tl tl)) 
-                       else if hd.number_chunks = 0 
-                            then helper tl 
-                            else hd::(helper tl)
-     in 
-     let newlist = helper all_metadrops in 
-     all_metadrops <- newlist 
+	    | []      -> []
+	    | hd::[]  -> 
+            if hd.number_chunks = 0 
+              then [] 
+              else [hd]
+	    | hd:: tl -> 
+            if (List.hd tl).number_chunks = 0 
+              then helper (hd::(List.tl tl)) 
+              else 
+                if hd.number_chunks = 0 
+                  then helper tl 
+                  else hd::(helper tl)
+      in 
+      let newlist = helper all_metadrops in 
+      all_metadrops <- newlist 
 
-    (* puts the solved singles into the message 
-     * prints newest message *)
+    (* puts the solved singles into the message; prints newest message *)
     method get_message: string =
-    let rec string_int (lst:int list) =
-      match lst with
-        | [] -> ""
+      let rec string_int (lst:int list) =
+        match lst with
+        | []     -> ""
         | hd::tl -> (String.make 1 (char_of_int hd)) ^ (string_int tl)
-    in
-    let put (m:metadrop) : unit =  
-       match m.pieces_list with
-	 | [] -> raise TODO
-	 | hd::[] -> String.blit (string_int m.contents) 0 message (hd*piece_size) piece_size
-	   (* message.[hd] <- string_int m.contents *)
-	 | hd:: tl -> raise TODO
-     in
-     List.iter put solved_metadrops;
-     (*Printf.printf "\033[KKNOWN MESSAGE: %s" message;*)
-     let length = totalPieces * piece_size in
-     let length' = length - extra in
-     String.sub message 0 length'
+      in
+      let put (m:metadrop) : unit =  
+         match m.pieces_list with
+	     | hd::[] -> 
+               String.blit (string_int m.contents) 0 
+                           message (hd*piece_size) piece_size
+	     | _ -> failwith "Impossible!"
+      in
+      List.iter put solved_metadrops;
+      (*Printf.printf "\033[KKNOWN MESSAGE: %s" message;*)
+      let length = totalPieces * piece_size in
+      let length' = length - extra          in
+      String.sub message 0 length'
     
     (* a way to see the other side  *)
     method get_all_metadrops = all_metadrops
