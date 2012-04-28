@@ -52,7 +52,8 @@ object
     (* a string representing the part of the message we have decoded so far *)
     val mutable message : string 
     
-    (* a list of metadrops that are made of one chunk and not yet added to message *)
+    (* a list of metadrops that are made of one chunk and not yet added to 
+     * message *)
     val mutable to_add_message : metadrop list
 
     (* number that shows how much of the file we have decoded, in pieces *)
@@ -309,7 +310,7 @@ object (self)
        Printf.printf "RECONSTRUCTED MESSAGE: %s \n" message;
        Printf.printf "COUNT: %d \n" counter; *)
        Printf.printf "IDEAL METADROP CONSUMPTION: %d   " totalPieces;
-       Printf.printf "\rMETADROPS CONSUMED: %d  " (metadrops_consumed(*List.length all_metadrops*));
+       Printf.printf "\rMETADROPS CONSUMED: %d  " (metadrops_consumed);
        flush_all ()
 
     method num_used : int = metadrops_consumed (*List.length all_metadrops*)

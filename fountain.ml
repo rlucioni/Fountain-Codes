@@ -4,8 +4,7 @@ open Droplet;;
 (* the fountain produces droplets according to the fountain code 
  * implementation chosen *)
 
-class
- type fountain =
+class type fountain =
 object
   
     (* the total data (file) being transferred *)
@@ -44,8 +43,8 @@ object
 
     (* this generates a new random droplet object, using the above 
        methods and instance variables *)
-    method output_droplet : droplet
-    method output_droplet_list : int -> droplet list
+    method output_droplet : droplet option
+    method output_droplet_list : int -> (droplet option) list
 
     method private get_diced_data : int list array
 
@@ -131,12 +130,22 @@ object (self)
         in
         help_xor droplet_pieces
 
-    method output_droplet    = self#random_seed; 
-                               self#update_droplet_pieces self#rand_droplet_pieces;
-                               new lt_droplet (self#xor) 
-                                              (total_pieces)
-                                              (seed) (extra)
-    method output_droplet_list (n:int) : droplet list = 
+
+    (* call f with probability (1/p) and g if f is not called *)
+    method private with_inv_probability_or (p:int) (f:unit->'a) (g:unit->'a) : 'a =
+        Random.self_init ();    
+        if Random.int p = 0 then f () else g ()
+
+    method output_droplet    =
+        self#with_inv_probability_or p 
+           (fun () -> None)
+           (fun () -> (self#random_seed; 
+                       self#update_droplet_pieces self#rand_droplet_pieces;
+                       Some (new lt_droplet (self#xor) 
+                                      (total_pieces)
+                                      (seed) (extra))))
+
+    method output_droplet_list (n:int) : (droplet option) list = 
         if n > 0 then self#output_droplet::(self#output_droplet_list (n-1)) else []
 
     method private get_diced_data = diced_data
