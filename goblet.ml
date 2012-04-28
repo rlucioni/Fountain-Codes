@@ -277,7 +277,7 @@ object (self)
 	     | hd::[] -> 
                String.blit (string_int m.contents) 0 
                            message (hd*piece_size) piece_size
-	     | _ -> failwith "Impossible!"
+	     | _      -> failwith "Impossible result in get_message."
       in
       List.iter put solved_metadrops;
       (*Printf.printf "\033[KKNOWN MESSAGE: %s" message;*)
@@ -285,11 +285,11 @@ object (self)
       let length' = length - extra          in
       String.sub message 0 length'
     
-    (* a way to see the other side  *)
+    (* methods which allow access to instance variables *)
     method get_all_metadrops = all_metadrops
     method get_solved_singles = solved_metadrops
     
-    (* an early implementation of a progress printer *)
+    (* prints statistics and progress as we reconstruct the message *)
     method print_progress : unit  = 
        (*Printf.printf "\n \n"; 
        Printf.printf "RECONSTRUCTED MESSAGE: %s \n" message;
@@ -300,22 +300,7 @@ object (self)
 
     method num_used : int = List.length all_metadrops
 
-(*   let string_of_metadrop (m : metadrop) : string = (
-       "{ number_chunks :" ^ (string_of_int m.number_chunks) ^
-       "; pieces_list : [" ^ (string_of_int_list m.pieces_list) ^
-       "] ; contents : " ^ (m.contents) ^ " }" )
-     in 
-     let string_of_metadrop_list (mlst: metadrop list) : string= 
-      (List.fold_right (fun x y -> ((string_of_metadrop x)^ " \n" ^ y)) mlst "")
-     in 
-      " totalPieces =" ^ (string_of_int totalPieces) ^ "\n 
-        message = " ^ message ^ "\n
-        all_metadrops = \n ^ "
-        string_of_metadrop_list all_metadrops ^ " \n
-        counter = " ^ string_of_int counter ^ "\n"
- *)
     method check_complete : bool = counter = totalPieces
 
     method get_total_pieces = totalPieces
-    
 end
