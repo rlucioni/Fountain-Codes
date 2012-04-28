@@ -38,11 +38,12 @@ FILE MANIFEST
                      encoded, transmitted to a goblet, and decoded; compile 
                      to run from the command line
 
-    md5test.sh     - compiles operations, creates a test file with 1000
-                     bytes pulled from /dev/random, runs that file through 
-                     operations, generates and compares MD5 hashes of the	
-                     input and output files, and informs you of the result;
-                     test is passed if MD5 hashes match
+    md5test.sh     - used for testing; compiles operations, creates a test file 
+                     with 1000 bytes pulled from /dev/random, runs that file 
+                     through operations, generates and compares MD5 hashes of 
+                     the input and output files, and informs you of the result;
+                     test is passed if MD5 hashes match, failed if they do 
+                     not match
 
                      NOTE: If you are in the appliance, you MUST change calls 
                      to md5 in this script to calls to md5sum. As it is, 
@@ -90,9 +91,10 @@ This will cut up the data contained in sentence.txt into 5 character pieces and
 allow at most 4 pieces to be XORed together in a droplet. The output (the 
 reconstructed file) will be in test_dump.
 
-We have included 2 scripts to demonstrate out project in action, md5test.sh and 
-image_test.sh. Both are described above in the File Manifest. These scripts are
-run from the command line. To run md5test.sh, type:
+We have included 2 scripts used for testing which also serve to 
+demonstrate out project in action: md5test.sh and image_test.sh. Both are 
+described above in the File Manifest. These scripts are run from the command 
+line. To run md5test.sh, type:
 
 ./md5test.sh
 
