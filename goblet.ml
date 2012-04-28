@@ -55,17 +55,20 @@ object
     (* a list of metadrops that are made of one chunk and not yet added to 
      * message *)
     val mutable to_add_message : metadrop list
+    
+    (* a count of how many droplets have been dropped*)
+    val mutable drop_count : int
 
     (* number that shows how much of the file we have decoded, in pieces *)
     val mutable counter : int
 
     (* takes one droplet, decodes the seed information, and adds it to the pool
      * of metadrops *)
-    method get_droplet : droplet -> unit 
+    method get_droplet : droplet option -> unit 
 
     (* takes more than one droplet, runs their seed information, and adds them
      * to the pool of metadrops*)
-    method get_droplet_list : droplet list -> unit
+    method get_droplet_list : droplet option list -> unit
     
     (* takes all_metadrops and trys to decode them *)
     method decode : unit
@@ -111,6 +114,8 @@ object (self)
     val mutable metadrops_consumed = 0   
  
     val mutable counter = 0
+     
+    val mutable drop_count = 0    
 
     val mutable to_add_message = []
     
@@ -138,13 +143,16 @@ object (self)
     
     (* adds a droplet to the goblet; converts a droplet to a metadrops and adds
      * it to all_metadrops, the metadrop pool *)
-    method get_droplet (d: droplet) : unit = 
+    method get_droplet (drop: droplet option) : unit = 
+        match drop with 
+	  | None -> (drop_count <- 1 + drop_count) 
+	  | Some (d) -> 
         let metad = (self#get_metadrop d) in 
         all_metadrops <- (metad::all_metadrops);
         metadrops_consumed <- metadrops_consumed + 1;
          ()
      
-    method get_droplet_list (dlist: droplet list) : unit = 
+    method get_droplet_list (dlist: droplet option list) : unit = 
         List.iter (self#get_droplet) dlist
     
     (* attempts to decode the metadrops in all_metadrops *)
@@ -310,7 +318,7 @@ object (self)
        Printf.printf "RECONSTRUCTED MESSAGE: %s \n" message;
        Printf.printf "COUNT: %d \n" counter; *)
        Printf.printf "IDEAL METADROP CONSUMPTION: %d   " totalPieces;
-       Printf.printf "\rMETADROPS CONSUMED: %d  " (metadrops_consumed);
+       Printf.printf "\rMETADROPS CONSUMED: %d DROPS: %d  " (metadrops_consumed) (drop_count) ;
        flush_all ()
 
     method num_used : int = metadrops_consumed (*List.length all_metadrops*)
