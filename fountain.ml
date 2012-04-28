@@ -1,9 +1,5 @@
 open Random;;
-<<<<<<< HEAD
-(*open String_droplet;;*)
-=======
 open Droplet;;
->>>>>>> 78e9275be4393093ad0a3825e9c41a890ee28b7a
 
 (* the fountain produces droplets according to the fountain code 
  * implementation chosen *)

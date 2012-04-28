@@ -24,5 +24,12 @@ probability:
 	ocamlc -c probability.ml
 	ocamlc -o probability droplet.cmo fountain.cmo goblet.cmo distribution.cmo probability.cmo
 
+fast:
+	@echo "COMPILING..."
+	ocamlc -c droplet.ml
+	ocamlc -c fountain.ml
+	ocamlc -c fast_goblet.ml
+
+
 clean:
 	rm -f *.cmo *.cmi operations copier probability
