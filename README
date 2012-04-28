@@ -1,56 +1,69 @@
 README
 
-CS 51 Final Project: Fountain Codes
+CS 51 FINAL PROJECT: FOUNTAIN CODES
 
-This is an implementation of a fountain code algorithm written in OCaml.
+This is an OCaml implementation of a Luby transform (LT) code, the first class 
+of practical fountain codes that are near optimal erasure correcting codes.
+
+The LT code was invented by Michael Luby in 1998 and published in 2002.
+
+The distinguishing characteristic of LT codes is in employing an encoding 
+algorithm based on the XOR (exclusive or) operation to encode and decode a 
+message. LT codes are called "rateless" because the encoding algorithm can in 
+principle produce an infinite number of message packets, which for the purposes 
+of this project have been named "droplets."
 
 ********************************************************************************
 
 FILE MANIFEST
-    droplet.ml    - defines the Droplet, containing a seed, the XOR'd data, and 
-                    the total number of pieces
+    droplet.ml     - defines the Droplet, containing a seed, the XOR'd data, 
+                     and the total number of pieces
     
-    fountain.ml   - defines the Fountain, produces Droplets according to the 
-                    fountain code implementation chosen
+    fountain.ml    - defines the Fountain, produces Droplets according to the 
+                     fountain code implementation chosen
     
-    goblet.ml     - defines a Goblet, used to collect Droplets and reconstruct 
-                    the original data. This takes a droplet (seed, the data to 
-                    be decoded, and the total number of pieces)
+    goblet.ml      - defines a Goblet, used to collect Droplets and reconstruct 
+                     the original data. This takes a droplet (seed, the data to 
+                     be decoded, and the total number of pieces)
 
-    operations.ml - allows encoding and decoding of an arbitrary string, passed
-                    as an argument along with a piece size and a maximum number 
-                    of pieces; compile to run
+    operations.ml  - allows encoding and decoding of an arbitrary file 
+                     (message); the file is passed as an argument along with an 
+                     output destination (like test_dump), a piece size, and a 
+                     maximum number of pieces; compile to run from the command 
+                     line
 
-    io_operations.ml - allows encoding and decoding of an arbitrary file; the
-                       file is passed as an argument along with an output
-                       destination, a piece size, and a maximum number of
-                       pieces; compile to run
+    probability.ml - generates a Uniform, Poisson, or Normal distribution,
+                     then takes additional arguments based on the probability
+                     distribution selected along with a message, which is 
+                     encoded, transmitted to a goblet, and decoded; compile 
+                     to run from the command line
 
-    probability.ml   - contains additional probability distributions; compile
-                       to run
-
-    copier.ml        - a test of OCaml's I/O features; used to demo cloning of 
-                       a file; compile to run
-		
-    run.sh      - bash script for running io_operations with given arguments
-	
-    md5test.sh  - compiles io_operations, creates a test file with 1000
-                  bytes from /dev/random, runs that file through 
-                  io_operations, generates and compares MD5 hashes of the	
-                  input and output, and informs you of the result
+    md5test.sh     - compiles operations, creates a test file with 1000
+                     bytes pulled from /dev/random, runs that file through 
+                     operations, generates and compares MD5 hashes of the	
+                     input and output files, and informs you of the result;
+                     test is passed if MD5 hashes match
 	
     test_dump,
-    test_file   - files used/overwritten by md5test.sh for testing
+    test_file      - files used/overwritten by md5test.sh for testing; md5test
+                     should touch these files on its own - if not, just touch
+                     them before running md5test; test_dump can also be used as
+                     an output destination when running operations
 				
-    lenna.jpg   - image for testing file I/O
+    lenna.jpg      - image for testing file I/O
 
-    test_framework.ml,
-    pretty_print.ml    - contain the CamelJockey testing framework
+    sentence.txt   - A text file which contains the sentence "This is a 
+                     test." Provided for convenience when testing operations.
+
+    prince_ch1.txt - A text file which contains Chapter 1 of The Prince.
+                     Provided for convenience when testing operations.
+
 
 OPERATING INSTRUCTIONS
-To run on a file, compile io_operations and then from the command line:
+To encode a file, transmit its droplets to a goblet, and decode the file, 
+first compile operations. Then, from the command line:
 
-./io_operations filename output_destination piece_size max_pieces
+./operations filename output_destination piece_size max_pieces
 
 
 KNOWN BUGS/INEFFICIENCIES

@@ -2,18 +2,11 @@ all: operations copier probability
 
 operations:
 	@echo "COMPILING..."
-	ocamlc -c pretty_print.ml
-	ocamlc -c test_framework.ml
 	ocamlc -c droplet.ml
 	ocamlc -c fountain.ml
 	ocamlc -c goblet.ml
 	ocamlc -c operations.ml
-	ocamlc -o operations pretty_print.cmo test_framework.cmo droplet.cmo fountain.cmo goblet.cmo operations.cmo
-
-copier: 
-	@echo "COMPILING..."
-	ocamlc -c copier.ml
-	ocamlc -o copier copier.cmo
+	ocamlc -o operations droplet.cmo fountain.cmo goblet.cmo operations.cmo
 
 probability:
 	@echo "COMPILING..."
