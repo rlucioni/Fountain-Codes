@@ -17,17 +17,12 @@ FILE MANIFEST
                     the original data. This takes a droplet (seed, the data to 
                     be decoded, and the total number of pieces)
 
-    operations.ml - allows encoding and decoding of an arbitrary string, passed
-                    as an argument along with a piece size and a maximum number 
-                    of pieces; compile to run
+    operations.ml - allows encoding and decoding of an arbitrary file; the
+                    file is passed as an argument along with an output
+                    destination, a piece size, and a maximum number of
+                    pieces; compile to run
 
-    io_operations.ml - allows encoding and decoding of an arbitrary file; the
-                       file is passed as an argument along with an output
-                       destination, a piece size, and a maximum number of
-                       pieces; compile to run
-
-    probability.ml   - contains additional probability distributions; compile
-                       to run
+    probability.ml - ; compile to run
 
     copier.ml        - a test of OCaml's I/O features; used to demo cloning of 
                        a file; compile to run
