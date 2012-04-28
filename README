@@ -101,6 +101,9 @@ To run image_test.sh, type:
 ./image_test.sh
 
 
+(Vipul -> use of probability)
+
+
 KNOWN BUGS/INEFFICIENCIES
 The math currently being used in Goblet is sub-optimal and stands to be improved
 by allowing the program the recognize when it can XOR immediately, instead of
