@@ -61,6 +61,9 @@ object
     (* prints: total pieces, all_metadrops, message and counter for debugging *)
     method print_progress : unit
 
+    (* returns how many metadrops have been used so far *)
+    method num_used : int
+
     (* compares counter and total_pieces, checking to see if we are done
      * decoding (i.e., counter = total_pieces) *)
     method check_complete: bool
@@ -258,7 +261,7 @@ object (self)
        Printf.printf "\rMETADROPS CONSUMED: %d" (List.length all_metadrops);
        flush_all ()
 
-
+    method num_used : int = List.length all_metadrops
 
 (*   let string_of_metadrop (m : metadrop) : string = (
        "{ number_chunks :" ^ (string_of_int m.number_chunks) ^
