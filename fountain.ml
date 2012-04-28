@@ -149,6 +149,13 @@ object (self)
 end
 
 (*
+let a = new lt_fountain "this is a long test" 1 5
+
+let b = a#output_droplet
+
+let c = new lt_goblet b 5
+#use "new_goblet.ml"
+
 let _ = c#get_droplet (a#output_droplet);;
 
 let _ = c#decode;;
@@ -156,4 +163,8 @@ let _ = c#decode;;
 
 
 let _ = c#get_message;;
+
+c#get_all_metadrops;
+c#remove_empties;
+
 *)

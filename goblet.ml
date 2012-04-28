@@ -39,6 +39,9 @@ class type goblet =
 object
     (* total number of pieces in the original file *)
     val mutable totalPieces : int
+    
+    (* total number of metadrops the goblet has consumed *)
+    val mutable metadrops_consumed : int
  
     (* a list of all metadrops in the goblet  *)
     val mutable all_metadrops : metadrop list
@@ -48,6 +51,9 @@ object
     
     (* a string representing the part of the message we have decoded so far *)
     val mutable message : string 
+    
+    (* a list of metadrops that are made of one chunk and not yet added to message *)
+    val mutable to_add_message : metadrop list
 
     (* number that shows how much of the file we have decoded, in pieces *)
     val mutable counter : int
@@ -101,7 +107,11 @@ object (self)
 
     val mutable solved_metadrops = []
     
+    val mutable metadrops_consumed = 0   
+ 
     val mutable counter = 0
+
+    val mutable to_add_message = []
     
     val mutable piece_size = List.length d#get_contents.data
     
@@ -129,7 +139,9 @@ object (self)
      * it to all_metadrops, the metadrop pool *)
     method get_droplet (d: droplet) : unit = 
         let metad = (self#get_metadrop d) in 
-        all_metadrops <- (metad::all_metadrops); ()
+        all_metadrops <- (metad::all_metadrops);
+        metadrops_consumed <- metadrops_consumed + 1;
+         ()
      
     method get_droplet_list (dlist: droplet list) : unit = 
         List.iter (self#get_droplet) dlist
@@ -157,8 +169,9 @@ object (self)
                       in
                       all_metadrops <- all_metadrops_new; 
                       solved_metadrops <- simpleM::solved_metadrops; 
+                      to_add_message <- simpleM::to_add_message;
                       solver (count + 1)
-                    else count
+                  else (self#remove_empties; count)
             in
             let progress = solver 0 in
             if (progress) > 0 
@@ -279,8 +292,9 @@ object (self)
                            message (hd*piece_size) piece_size
 	     | _      -> failwith "Impossible result in get_message."
       in
-      List.iter put solved_metadrops;
+      List.iter put to_add_message (*solved_metadrops*);
       (*Printf.printf "\033[KKNOWN MESSAGE: %s" message;*)
+      to_add_message <- []; 
       let length = totalPieces * piece_size in
       let length' = length - extra          in
       String.sub message 0 length'
@@ -293,12 +307,12 @@ object (self)
     method print_progress : unit  = 
        (*Printf.printf "\n \n"; 
        Printf.printf "RECONSTRUCTED MESSAGE: %s \n" message;
-       Printf.printf "COUNT: %d \n" counter;
-       Printf.printf "TOTAL PIECES: %d \n" totalPieces;*)
-       Printf.printf "\rMETADROPS CONSUMED: %d" (List.length all_metadrops);
+       Printf.printf "COUNT: %d \n" counter; *)
+       Printf.printf "IDEAL METADROP CONSUMPTION: %d   " totalPieces;
+       Printf.printf "\rMETADROPS CONSUMED: %d  " (metadrops_consumed(*List.length all_metadrops*));
        flush_all ()
 
-    method num_used : int = List.length all_metadrops
+    method num_used : int = metadrops_consumed (*List.length all_metadrops*)
 
     method check_complete : bool = counter = totalPieces
 
