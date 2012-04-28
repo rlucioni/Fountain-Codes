@@ -81,6 +81,25 @@ first compile operations. Then, from the command line:
 
 ./operations filename output_destination piece_size max_pieces
 
+For example, to run the sentence contained in sentence.txt through our LT code
+(i.e., encode, transmit droplets to a Goblet, and then decode), you could type:
+
+./operations sentence.txt test_dump 5 4
+
+This will cut up the data contained in sentence.txt into 5 character pieces and
+allow at most 4 pieces to be XORed together in a droplet. The output (the 
+reconstructed file) will be in test_dump.
+
+We have included 2 scripts to demonstrate out project in action, md5test.sh and 
+image_test.sh. Both are described above in the File Manifest. These scripts are
+run from the command line. To run md5test.sh, type:
+
+./md5test.sh
+
+To run image_test.sh, type:
+
+./image_test.sh
+
 
 KNOWN BUGS/INEFFICIENCIES
 The math currently being used in Goblet is sub-optimal and stands to be improved
