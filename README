@@ -43,7 +43,23 @@ FILE MANIFEST
                      operations, generates and compares MD5 hashes of the	
                      input and output files, and informs you of the result;
                      test is passed if MD5 hashes match
-	
+
+                     NOTE: If you are in the appliance, you MUST change calls 
+                     to md5 in this script to calls to md5sum. As it is, 
+                     md5test.sh will run natively on Mac OS X, but not in the 
+                     appliance. After making this change, you can ignore 
+                     warnings about the use of the quiet flag (-q).
+
+    image_test.sh  - same as md5test.sh, but uses the included lenna.jpg image
+                     instead of a randomly generated file; the output file 
+                     (processed image) can be viewed by opening test_dump
+                     
+                     NOTE: If you are in the appliance, you MUST change calls 
+                     to md5 in this script to calls to md5sum. As it is, 
+                     image_test.sh will run natively on Mac OS X, but not in 
+                     the appliance. After making this change, you can ignore 
+                     warnings about the use of the quiet flag (-q).
+
     test_dump,
     test_file      - files used/overwritten by md5test.sh for testing; md5test
                      should touch these files on its own - if not, just touch
