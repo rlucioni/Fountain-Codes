@@ -49,7 +49,8 @@ FILE MANIFEST
                      to md5 in this script to calls to md5sum. As it is, 
                      md5test.sh will run natively on Mac OS X, but not in the 
                      appliance. After making this change, you can ignore 
-                     warnings about the use of the quiet flag (-q).
+                     warnings about the use of the quiet flag (-q) when you run
+                     the script.
 
     image_test.sh  - same as md5test.sh, but uses the included lenna.jpg image
                      instead of a randomly generated file; the output file 
@@ -59,7 +60,8 @@ FILE MANIFEST
                      to md5 in this script to calls to md5sum. As it is, 
                      image_test.sh will run natively on Mac OS X, but not in 
                      the appliance. After making this change, you can ignore 
-                     warnings about the use of the quiet flag (-q).
+                     warnings about the use of the quiet flag (-q) when you run
+                     the script.
 
     test_dump,
     test_file      - files created, used, and/or overwritten by md5test.sh and 
