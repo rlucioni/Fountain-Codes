@@ -32,11 +32,22 @@ FILE MANIFEST
                      maximum number of pieces; compile to run from the command 
                      line
 
-    probability.ml - generates a Uniform, Poisson, or Normal distribution,
+    probability.ml - takes command-line argument of a file name, then initializes
+    		     and uses a fountain and goblet with uniform, poisson, or 
+		     normal distribution (see distribution.ml below)
                      then takes additional arguments based on the probability
-                     distribution selected along with a message, which is 
-                     encoded, transmitted to a goblet, and decoded; compile 
-                     to run from the command line
+                     distribution selected; also allows running multiple times
+		     to generate multiple samples of transmission;
+		     compile to run from the command line
+
+    distribution.ml- contains implementations of fountain and goblet, with the
+    		     rand_droplet_pieces and get_num_chunks methods overridden
+		     with new PRNG, which generate values according to either
+		     the poisson or normal distributions; the parameters to
+		     these distributions are given as class arguments;
+		     when droplets are generated, the number of pieces XOR'd
+		     into each piece varies based on the distribution and
+		     its parameters
 
     md5test.sh     - used for testing; compiles operations, creates a test file 
                      with 1000 bytes pulled from /dev/random, runs that file 
@@ -108,9 +119,17 @@ To run image_test.sh, type:
 
 $ ./image_test.sh
 
+To run probability, type:
 
-(VIPUL -> use of probability)
+$ ./probability filename
 
+The executable will then prompt you for additional arguments, including
+a choice of distribution, the parameters relevant for that distribution, and the
+number of times to attempt the file decoding. The probability executable does
+not output the file anywhere; it simply generates a new fountain and goblet
+a certain number of times, and then prints out the number of droplets that
+were consumed before the file could be decoded, along with the number of pieces
+the original file was made of.
 
 KNOWN BUGS/INEFFICIENCIES
 The math currently being used in Goblet is sub-optimal and stands to be improved
