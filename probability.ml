@@ -51,13 +51,13 @@ let n = Printf.printf "# times to run: "; read_int() ;;
 let rec get_droplet f : droplet  = 
   let a = f#output_droplet in
   match a with
-  |None   -> get_droplet ()
-  |Some d -> d
+    | None -> get_droplet f
+    | Some d -> d
 
 let rec transmit (f:fountain) (g:goblet) : int =
     if g#check_complete
     then (*(print_string (g#get_message ^ "\n");*) g#num_used
-      else ((g#get_droplet (get_droplet f));
+      else ((g#get_droplet f#output_droplet);
            g#decode;
            ignore(g#get_message);
            transmit f g) ;;

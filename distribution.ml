@@ -22,7 +22,7 @@ object (self)
 
     method rand_droplet_pieces =
       let pois = self#rand_poisson + 1 in
-      if pois > self#get_total_pieces
+      if pois < self#get_total_pieces
       then pois else self#rand_droplet_pieces
 
     method get_mean = l
@@ -46,7 +46,7 @@ object (self)
 
     method get_num_chunks =
       let pois = self#rand_poisson + 1 in
-      if pois > self#get_total_pieces
+      if pois < self#get_total_pieces
       then pois else self#get_num_chunks
 
 end
@@ -71,7 +71,7 @@ object (self)
 
     method rand_droplet_pieces =
       let norm = self#rand_normal in
-      if norm > (float_of_int self#get_total_pieces)
+      if norm < (float_of_int self#get_total_pieces)
       then (int_of_float norm) else self#rand_droplet_pieces
 
     method get_mean = m
@@ -95,7 +95,7 @@ object (self)
 
     method get_num_chunks =
       let norm = self#rand_normal in
-      if norm > (float_of_int self#get_total_pieces)
+      if norm < (float_of_int self#get_total_pieces)
       then (int_of_float norm) else self#get_num_chunks
 
 end
