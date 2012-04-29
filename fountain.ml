@@ -101,7 +101,8 @@ object (self)
      let rec int_string_helper (str:string) (counter:int) : int list =
         if (counter = String.length str) 
           then []
-          else ((int_of_char str.[counter]) :: (int_string_helper str (counter + 1)))
+          else ((int_of_char str.[counter]) :: 
+                                          (int_string_helper str (counter + 1)))
      in 
      int_string_helper str 0
    
@@ -110,13 +111,7 @@ object (self)
       let lst2 = (List.map (self#int_string) lst) in
       (diced_data <- (Array.of_list lst2))
 
-(*       if (counter = String.length str)
-          then []
-          else 
-           (int_of_char str.[counter] :: (string_to_intlist str (counter + 1)))
-*)
-    (* we may be able to abstract this out to create different distributions *)
-    method get_piece = (* int_of_char data.[int total_pieces]*) 
+    method get_piece =
       let a = (int total_pieces) in 
      (*(Printf.printf "encoding#: %d \n" a);*) diced_data.(a) 
 
@@ -169,24 +164,3 @@ object (self)
     method get_var = 0.
     method get_bound = bound
 end
-
-(*
-let a = new lt_fountain "this is a long test" 1 5
-
-let b = a#output_droplet
-
-let c = new lt_goblet b 5
-#use "new_goblet.ml"
-
-let _ = c#get_droplet (a#output_droplet);;
-
-let _ = c#decode;;
-
-
-
-let _ = c#get_message;;
-
-c#get_all_metadrops;
-c#remove_empties;
-
-*)
