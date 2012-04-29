@@ -39,6 +39,9 @@ class type goblet =
 object
     (* total number of pieces in the original file *)
     val mutable totalPieces : int
+    
+    (* total number of metadrops the goblet has consumed *)
+    val mutable metadrops_consumed : int
  
     (* a list of all metadrops in the goblet  *)
     val mutable all_metadrops : metadrop list
@@ -48,6 +51,13 @@ object
     
     (* a string representing the part of the message we have decoded so far *)
     val mutable message : string 
+    
+    (* a list of metadrops that are made of one chunk and not yet added to 
+     * message *)
+    val mutable to_add_message : metadrop list
+    
+    (* a count of how many droplets have been dropped*)
+    val mutable drop_count : int
 
     (* number that shows how much of the file we have decoded, in pieces *)
     val mutable counter : int
@@ -57,11 +67,11 @@ object
 
     (* takes one droplet, decodes the seed information, and adds it to the pool
      * of metadrops *)
-    method get_droplet : droplet -> unit 
+    method get_droplet : droplet option -> unit 
 
     (* takes more than one droplet, runs their seed information, and adds them
      * to the pool of metadrops*)
-    method get_droplet_list : droplet list -> unit
+    method get_droplet_list : droplet option list -> unit
     
     (* takes all_metadrops and trys to decode them *)
     method decode : unit
@@ -104,7 +114,13 @@ object (self)
 
     val mutable solved_metadrops = []
     
+    val mutable metadrops_consumed = 0   
+ 
     val mutable counter = 0
+     
+    val mutable drop_count = 0    
+
+    val mutable to_add_message = []
     
     val mutable piece_size = List.length d#get_contents.data
     
@@ -130,11 +146,16 @@ object (self)
     
     (* adds a droplet to the goblet; converts a droplet to a metadrops and adds
      * it to all_metadrops, the metadrop pool *)
-    method get_droplet (d: droplet) : unit = 
+    method get_droplet (drop: droplet option) : unit = 
+        match drop with 
+	  | None -> (drop_count <- 1 + drop_count) 
+	  | Some (d) -> 
         let metad = (self#get_metadrop d) in 
-        all_metadrops <- (metad::all_metadrops); ()
+        all_metadrops <- (metad::all_metadrops);
+        metadrops_consumed <- metadrops_consumed + 1;
+         ()
      
-    method get_droplet_list (dlist: droplet list) : unit = 
+    method get_droplet_list (dlist: droplet option list) : unit = 
         List.iter (self#get_droplet) dlist
     
     (* attempts to decode the metadrops in all_metadrops *)
@@ -160,8 +181,9 @@ object (self)
                       in
                       all_metadrops <- all_metadrops_new; 
                       solved_metadrops <- simpleM::solved_metadrops; 
+                      to_add_message <- simpleM::to_add_message;
                       solver (count + 1)
-                    else count
+                  else (self#remove_empties; count)
             in
             let progress = solver 0 in
             if (progress) > 0 
@@ -282,8 +304,9 @@ object (self)
                            message (hd*piece_size) piece_size
 	     | _      -> failwith "Impossible result in get_message."
       in
-      List.iter put solved_metadrops;
+      List.iter put to_add_message (*solved_metadrops*);
       (*Printf.printf "\033[KKNOWN MESSAGE: %s" message;*)
+      to_add_message <- []; 
       let length = totalPieces * piece_size in
       let length' = length - extra          in
       String.sub message 0 length'
@@ -296,12 +319,13 @@ object (self)
     method print_progress : unit  = 
        (*Printf.printf "\n \n"; 
        Printf.printf "RECONSTRUCTED MESSAGE: %s \n" message;
-       Printf.printf "COUNT: %d \n" counter;
-       Printf.printf "TOTAL PIECES: %d \n" totalPieces;*)
-       Printf.printf "\rMETADROPS CONSUMED: %d" (List.length all_metadrops);
+       Printf.printf "COUNT: %d \n" counter; *)
+       Printf.printf "   IDEAL PACKET CONSUMPTION: %d   " totalPieces;
+       Printf.printf "\rPACKETS CONSUMED: %d    PACKETS DROPPED: %d  " 
+                                             (metadrops_consumed) (drop_count);
        flush_all ()
 
-    method num_used : int = List.length all_metadrops
+    method num_used : int = metadrops_consumed (*List.length all_metadrops*)
 
     method check_complete : bool = counter = totalPieces
 

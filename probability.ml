@@ -47,10 +47,17 @@ match distro with
 
 let n = Printf.printf "# times to run: "; read_int() ;;
 
+(* gets and then strips the option from a droplet *)
+let rec get_droplet f : droplet  = 
+  let a = f#output_droplet in
+  match a with
+  |None   -> get_droplet ()
+  |Some d -> d
+
 let rec transmit (f:fountain) (g:goblet) : int =
     if g#check_complete
     then (*(print_string (g#get_message ^ "\n");*) g#num_used
-      else ((g#get_droplet f#output_droplet);
+      else ((g#get_droplet (get_droplet f));
            g#decode;
            ignore(g#get_message);
            transmit f g) ;;
@@ -64,9 +71,9 @@ let f_initialize () : fountain =
 
 let g_initialize (f:fountain) =
   match distro with
-    | "unif" -> new lt_goblet f#output_droplet f#get_bound
-    | "pois" -> new poisson_goblet f#get_mean f#output_droplet 1
-    | "norm" -> new normal_goblet f#get_mean f#get_var f#output_droplet 1
+    | "unif" -> new lt_goblet (get_droplet f) f#get_bound
+    | "pois" -> new poisson_goblet f#get_mean (get_droplet f) 1
+    | "norm" -> new normal_goblet f#get_mean f#get_var (get_droplet f) 1
     | _ -> failwith "Not a valid distribution."
 
 let transmitter () =
@@ -80,7 +87,7 @@ let rec tester lst n : int list =
 let rec stringify lst : string =
   match lst with
     | [] -> ""
-    | hd::tl -> string_of_int hd ^ "," ^ (stringify tl) ;;
+    | hd::tl -> string_of_int hd ^ "," ^ (stringify tl);;
 
 print_string ("\nFile length: " ^ (string_of_int ((String.length message) / piece_size)) ^ "\n") ;;
 print_string ((stringify (tester [] n)) ^ "\n")

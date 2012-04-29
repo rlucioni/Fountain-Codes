@@ -1,4 +1,7 @@
-type droplet_record = {data : int list; total_pieces : int; seed : int; extra : int}
+type droplet_record = {data         : int list; 
+                       total_pieces : int; 
+                       seed         : int; 
+                       extra        : int}
 
 (* the Droplet, containing a seed and the XOR'd data *)
 class type droplet =
@@ -30,5 +33,8 @@ object
     val mutable seed         = s
     val mutable extra        = e
     
-    method get_contents = {data = data; total_pieces = total_pieces; seed = seed; extra = extra}
+    method get_contents = {data         = data; 
+                           total_pieces = total_pieces; 
+                           seed         = seed; 
+                           extra        = extra}
 end

@@ -32,7 +32,15 @@ let condense_chars file =
 let message = condense_chars input_file
 
 let f = new lt_fountain message piece_size max_pieces
-let g = new lt_goblet f#output_droplet max_pieces
+
+let rec get_droplet () : droplet  = 
+  let a = f#output_droplet in
+  match a with
+  |None   -> get_droplet ()
+  |Some d -> d
+    
+
+let g = new lt_goblet (get_droplet ()) max_pieces
 
 let rec transmit () : unit = 
     if g#check_complete

@@ -4,16 +4,14 @@ touch test_dump
 echo "CLEANING..."
 make clean
 make operations
-echo "CREATING TEST FILE..."
-dd if=/dev/random of=test_file bs=1000 count=1
-echo "RUNNING LT CODE OPERATIONS..."
-./operations test_file test_dump 60 10
+echo "RUNNING LT CODE OPERATIONS ON lenna.jpg..."
+./operations lenna.jpg test_dump 300 10
 echo "GENERATING MD5 HASHES..."
-TEST_FILE_HASH=`md5 -q test_file`
+TEST_FILE_HASH=`md5 -q lenna.jpg`
 TEST_DUMP_HASH=`md5 -q test_dump`
 echo "COMPARING HASHES..."
 if [[ "$TEST_FILE_HASH" = "$TEST_DUMP_HASH" ]]; then 
-	echo "PASSED."
+	echo "OPERATIONS SUCCESSFUL. SEE test_dump FOR THE PROCESSED FILE."
 else 
 	echo "FAILED. $TEST_FILE_HASH vs $TEST_DUMP_HASH"
 fi

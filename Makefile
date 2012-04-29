@@ -1,4 +1,4 @@
-all: operations copier probability
+all: operations probability
 
 operations:
 	@echo "COMPILING..."
@@ -7,11 +7,6 @@ operations:
 	ocamlc -c goblet.ml
 	ocamlc -c operations.ml
 	ocamlc -o operations droplet.cmo fountain.cmo goblet.cmo operations.cmo
-
-copier: 
-	@echo "COMPILING..."
-	ocamlc -c copier.ml
-	ocamlc -o copier copier.cmo
 
 probability:
 	@echo "COMPILING..."
@@ -22,5 +17,6 @@ probability:
 	ocamlc -c probability.ml
 	ocamlc -o probability droplet.cmo fountain.cmo goblet.cmo distribution.cmo probability.cmo
 
+
 clean:
-	rm -f *.cmo *.cmi operations copier probability
+	rm -f *.cmo *.cmi operations probability

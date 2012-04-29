@@ -1,51 +1,115 @@
 README
 
-CS 51 Final Project: Fountain Codes
+CS 51 FINAL PROJECT: FOUNTAIN CODES
 
-This is an implementation of a fountain code algorithm written in OCaml.
+This is an OCaml implementation of a Luby transform (LT) code, the first class 
+of practical fountain codes that are near optimal erasure correcting codes.
+
+The LT code was invented by Michael Luby in 1998 and published in 2002.
+
+The distinguishing characteristic of LT codes is in employing an encoding 
+algorithm based on the XOR (exclusive or) operation to encode and decode a 
+message. LT codes are called "rateless" because the encoding algorithm can in 
+principle produce an infinite number of message packets, which for the purposes 
+of this project have been named "droplets."
 
 ********************************************************************************
 
 FILE MANIFEST
-    droplet.ml    - defines the Droplet, containing a seed, the XOR'd data, and 
-                    the total number of pieces
+    droplet.ml     - defines the Droplet, containing a seed, the XOR'd data, 
+                     and the total number of pieces
     
-    fountain.ml   - defines the Fountain, produces Droplets according to the 
-                    fountain code implementation chosen
+    fountain.ml    - defines the Fountain, produces Droplets according to the 
+                     fountain code implementation chosen
     
-    goblet.ml     - defines a Goblet, used to collect Droplets and reconstruct 
-                    the original data. This takes a droplet (seed, the data to 
-                    be decoded, and the total number of pieces)
+    goblet.ml      - defines a Goblet, used to collect Droplets and reconstruct 
+                     the original data. This takes a droplet (seed, the data to 
+                     be decoded, and the total number of pieces)
 
-    operations.ml - allows encoding and decoding of an arbitrary file; the
-                    file is passed as an argument along with an output
-                    destination, a piece size, and a maximum number of
-                    pieces; compile to run
+    operations.ml  - allows encoding and decoding of an arbitrary file 
+                     (message); the file is passed as an argument along with an 
+                     output destination (like test_dump), a piece size, and a 
+                     maximum number of pieces; compile to run from the command 
+                     line
 
-    probability.ml - ; compile to run
+    probability.ml - generates a Uniform, Poisson, or Normal distribution,
+                     then takes additional arguments based on the probability
+                     distribution selected along with a message, which is 
+                     encoded, transmitted to a goblet, and decoded; compile 
+                     to run from the command line
 
-    copier.ml        - a test of OCaml's I/O features; used to demo cloning of 
-                       a file; compile to run
-		
-    run.sh      - bash script for running io_operations with given arguments
-	
-    md5test.sh  - compiles io_operations, creates a test file with 1000
-                  bytes from /dev/random, runs that file through 
-                  io_operations, generates and compares MD5 hashes of the	
-                  input and output, and informs you of the result
-	
+    md5test.sh     - used for testing; compiles operations, creates a test file 
+                     with 1000 bytes pulled from /dev/random, runs that file 
+                     through operations, places the output in a file named 
+                     test_dump, generates and compares MD5 hashes of the input 
+                     and output files, and informs you of the result; test is 
+                     passed if MD5 hashes match, failed if they do not match
+
+                     NOTE: If you are in the appliance, you MUST change calls 
+                     to md5 in this script to calls to md5sum. As it is, 
+                     md5test.sh will run natively on Mac OS X, but not in the 
+                     appliance. After making this change, you can ignore 
+                     warnings about the use of the quiet flag (-q) when you run
+                     the script.
+
+    image_test.sh  - same as md5test.sh, but uses the included lenna.jpg image
+                     instead of a randomly generated file; the output file 
+                     (processed image) can be viewed by opening test_dump
+                     
+                     NOTE: If you are in the appliance, you MUST change calls 
+                     to md5 in this script to calls to md5sum. As it is, 
+                     image_test.sh will run natively on Mac OS X, but not in 
+                     the appliance. After making this change, you can ignore 
+                     warnings about the use of the quiet flag (-q) when you run
+                     the script.
+
     test_dump,
-    test_file   - files used/overwritten by md5test.sh for testing
-				
-    lenna.jpg   - image for testing file I/O
+    test_file      - files created, used, and/or overwritten by md5test.sh and 
+                     image_test.sh during testing; test_dump can (and should) 
+                     also be used as a convenient output destination when 
+                     running operations
+    
+    lenna.jpg      - image for testing file I/O
 
-    test_framework.ml,
-    pretty_print.ml    - contain the CamelJockey testing framework
+    sentence.txt   - A text file which contains the sentence "This is a 
+                     test." Provided for convenience when testing operations.
+
+    prince_ch1.txt - A text file which contains Chapter 1 of The Prince.
+                     Provided for convenience when testing operations.
+
 
 OPERATING INSTRUCTIONS
-To run on a file, compile io_operations and then from the command line:
+To encode a file, transmit its droplets to a goblet, and decode the file, 
+first compile operations:
 
-./io_operations filename output_destination piece_size max_pieces
+$ make operations
+
+Then, from the command line:
+
+$ ./operations filename output_destination piece_size max_pieces
+
+For example, to run the sentence contained in sentence.txt through our LT code
+(i.e., encode, transmit droplets to a Goblet, and then decode), you could type:
+
+$ ./operations sentence.txt test_dump 5 4
+
+This will cut up the data contained in sentence.txt into 5 character pieces and
+allow at most 4 pieces to be XORed together in a droplet. The output (the 
+reconstructed file) will be in test_dump.
+
+We have included 2 scripts used for testing which also serve to 
+demonstrate out project in action: md5test.sh and image_test.sh. Both are 
+described above in the File Manifest. These scripts are run from the command 
+line. To run md5test.sh, type:
+
+$ ./md5test.sh
+
+To run image_test.sh, type:
+
+$ ./image_test.sh
+
+
+(VIPUL -> use of probability)
 
 
 KNOWN BUGS/INEFFICIENCIES
