@@ -317,8 +317,8 @@ object (self)
        (*Printf.printf "\n \n"; 
        Printf.printf "RECONSTRUCTED MESSAGE: %s \n" message;
        Printf.printf "COUNT: %d \n" counter; *)
-       Printf.printf "IDEAL PACKET CONSUMPTION: %d   " totalPieces;
-       Printf.printf "\rPACKETS CONSUMED: %d PACKETS DROPPED: %d  " 
+       Printf.printf "   IDEAL PACKET CONSUMPTION: %d   " totalPieces;
+       Printf.printf "\rPACKETS CONSUMED: %d    PACKETS DROPPED: %d  " 
                                              (metadrops_consumed) (drop_count);
        flush_all ()
 
