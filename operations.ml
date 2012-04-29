@@ -3,7 +3,7 @@ open Fountain
 open Goblet;;
 
 if (Array.length Sys.argv) <> 5
-then failwith "Usage: ./io_operations input_file output_destination piece_size 
+then failwith "Usage: ./operations input_file output_destination piece_size 
                                                                      max_pieces"
 else ()
 
