@@ -95,7 +95,7 @@ object (self)
         if str_len mod len = 0 then chopper_helper len str 0 (str_len)
         else 
             (extra <- (extra + 1); self#chopper len (str^" "))
-   
+
 
     method private int_string (str:string) : int list =   
      let rec int_string_helper (str:string) (counter:int) : int list =
