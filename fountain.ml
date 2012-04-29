@@ -121,7 +121,6 @@ object (self)
      (*(Printf.printf "encoding#: %d \n" a);*) diced_data.(a) 
 
 
-    (* not a public method *)
     method private xor         =
         let rec help_xor (n:int) : int list =
 	        if (n > 1) 
@@ -129,21 +128,27 @@ object (self)
 	            else self#get_piece
         in
         help_xor droplet_pieces
-    (*p gets smaller as piece size gets bigger*)
+    
+    (* Probability of packet loss gets larger as piece size gets bigger 
+     * (i.e., droprob gets smaller as piece size increases).
+     *
+     * NOTE: These numbers have been assigned arbitrarily for the purposes of
+     * simulation. *)
     method private droprob = 
        if piece_size <= 20 
-       then 100 
-       else if piece_size <= 100
-       then 60
-       else 40
+         then 100 
+         else 
+           if piece_size <= 100
+             then 60
+             else 40
 
     (* call f with probability (1/p) and g if f is not called *)
-    method private with_inv_probability_or (p:int) (f:unit->'a) (g:unit->'a) : 'a =
+    method private inv_probability_or (p:int) (f:unit->'a) (g:unit->'a) : 'a =
         Random.self_init ();    
         if Random.int p = 0 then f () else g ()
 
     method output_droplet    =
-        self#with_inv_probability_or self#droprob
+        self#inv_probability_or self#droprob
            (fun () -> None)
            (fun () -> (self#random_seed; 
                        self#update_droplet_pieces self#rand_droplet_pieces;
@@ -152,7 +157,9 @@ object (self)
                                       (seed) (extra))))
 
     method output_droplet_list (n:int) : (droplet option) list = 
-        if n > 0 then self#output_droplet::(self#output_droplet_list (n-1)) else []
+        if n > 0 
+            then self#output_droplet::(self#output_droplet_list (n-1)) 
+            else []
 
     method private get_diced_data = diced_data
 

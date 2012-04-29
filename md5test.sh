@@ -1,5 +1,6 @@
 #!/bin/sh
 
+touch test_dump
 echo "CLEANING..."
 make clean
 make operations

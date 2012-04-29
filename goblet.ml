@@ -317,8 +317,9 @@ object (self)
        (*Printf.printf "\n \n"; 
        Printf.printf "RECONSTRUCTED MESSAGE: %s \n" message;
        Printf.printf "COUNT: %d \n" counter; *)
-       Printf.printf "IDEAL METADROP CONSUMPTION: %d   " totalPieces;
-       Printf.printf "\rMETADROPS CONSUMED: %d DROPS: %d  " (metadrops_consumed) (drop_count) ;
+       Printf.printf "IDEAL PACKET CONSUMPTION: %d   " totalPieces;
+       Printf.printf "\rPACKETS CONSUMED: %d PACKETS DROPPED: %d  " 
+                                             (metadrops_consumed) (drop_count);
        flush_all ()
 
     method num_used : int = metadrops_consumed (*List.length all_metadrops*)

@@ -40,10 +40,10 @@ FILE MANIFEST
 
     md5test.sh     - used for testing; compiles operations, creates a test file 
                      with 1000 bytes pulled from /dev/random, runs that file 
-                     through operations, generates and compares MD5 hashes of 
-                     the input and output files, and informs you of the result;
-                     test is passed if MD5 hashes match, failed if they do 
-                     not match
+                     through operations, places the output in a file named 
+                     test_dump, generates and compares MD5 hashes of the input 
+                     and output files, and informs you of the result; test is 
+                     passed if MD5 hashes match, failed if they do not match
 
                      NOTE: If you are in the appliance, you MUST change calls 
                      to md5 in this script to calls to md5sum. As it is, 
@@ -62,11 +62,11 @@ FILE MANIFEST
                      warnings about the use of the quiet flag (-q).
 
     test_dump,
-    test_file      - files used/overwritten by md5test.sh for testing; md5test
-                     should touch these files on its own - if not, just touch
-                     them before running md5test; test_dump can also be used as
-                     an output destination when running operations
-				
+    test_file      - files created, used, and/or overwritten by md5test.sh and 
+                     image_test.sh during testing; test_dump can (and should) 
+                     also be used as a convenient output destination when 
+                     running operations
+    
     lenna.jpg      - image for testing file I/O
 
     sentence.txt   - A text file which contains the sentence "This is a 
