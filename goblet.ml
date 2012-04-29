@@ -52,6 +52,9 @@ object
     (* number that shows how much of the file we have decoded, in pieces *)
     val mutable counter : int
 
+    (* uses the PRNG to generate the values used in each droplet *)
+    method get_num_chunks : int
+
     (* takes one droplet, decodes the seed information, and adds it to the pool
      * of metadrops *)
     method get_droplet : droplet -> unit 
