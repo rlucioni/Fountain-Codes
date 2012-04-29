@@ -89,5 +89,6 @@ let rec stringify lst : string =
     | [] -> ""
     | hd::tl -> string_of_int hd ^ "," ^ (stringify tl);;
 
-print_string ("\nFile length: " ^ (string_of_int ((String.length message) / piece_size)) ^ "\n") ;;
+print_string ("\nFile length: " ^ (string_of_int ((String.length message) / 
+                                                         piece_size)) ^ "\n") ;;
 print_string ((stringify (tester [] n)) ^ "\n")

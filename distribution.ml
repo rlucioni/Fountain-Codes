@@ -54,12 +54,13 @@ end
 
 (** NORMAL **)
 
-class normal_fountain (m:float) (v:float) (d:string) (ps:int) (bound:int) : fountain =
+class normal_fountain (m:float) (v:float) (d:string) (ps:int) (bound:int) 
+                                                                    : fountain =
 object (self)
   inherit lt_fountain d ps bound as super
 
     method private rand_snormal () =
-      let u = Random.float 2. -. 1. in
+        let u = Random.float 2. -. 1. in
       let v = Random.float 2. -. 1. in
       let s = (u ** 2.) +. (v ** 2.) in
       if (Random.float 1.) < 0.5

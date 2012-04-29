@@ -32,22 +32,22 @@ FILE MANIFEST
                      maximum number of pieces; compile to run from the command 
                      line
 
-    probability.ml - takes command-line argument of a file name, then initializes
-    		     and uses a fountain and goblet with uniform, poisson, or 
-		     normal distribution (see distribution.ml below)
+    probability.ml - takes a filename as a command line argument, then 
+                     initializes and uses a fountain and goblet with uniform, 
+                     poisson, or normal distribution (see distribution.ml below)
                      then takes additional arguments based on the probability
                      distribution selected; also allows running multiple times
-		     to generate multiple samples of transmission;
-		     compile to run from the command line
+                     to generate multiple samples of transmission;
+		             compile to run from the command line
 
     distribution.ml- contains implementations of fountain and goblet, with the
-    		     rand_droplet_pieces and get_num_chunks methods overridden
-		     with new PRNG, which generate values according to either
-		     the poisson or normal distributions; the parameters to
-		     these distributions are given as class arguments;
-		     when droplets are generated, the number of pieces XOR'd
-		     into each piece varies based on the distribution and
-		     its parameters
+    		         rand_droplet_pieces and get_num_chunks methods overridden
+		             with new PRNG, which generate values according to either
+		             the poisson or normal distributions; the parameters to
+		             these distributions are given as class arguments;
+		             when droplets are generated, the number of pieces XOR'd
+		             into each piece varies based on the distribution and
+		             its parameters
 
     md5test.sh     - used for testing; compiles operations, creates a test file 
                      with 1000 bytes pulled from /dev/random, runs that file 
@@ -119,6 +119,8 @@ To run image_test.sh, type:
 
 $ ./image_test.sh
 
+
+
 To run probability, type:
 
 $ ./probability filename
@@ -131,10 +133,16 @@ a certain number of times, and then prints out the number of droplets that
 were consumed before the file could be decoded, along with the number of pieces
 the original file was made of.
 
+
 KNOWN BUGS/INEFFICIENCIES
+Operations is known to overflow when used on relatively large images. This is
+likely the result of failing to use a recursive tail call in Goblet.
+
 The math currently being used in Goblet is sub-optimal and stands to be improved
 by allowing the program the recognize when it can XOR immediately, instead of
-waiting for a droplet containing a single piece of data. 
+waiting for a droplet containing a single piece of data. We tried but were
+ultimately unable to implement this feature using matrices and Gaussian
+elimination.
 
 RESOLVED - io_operations corrupts input data
 
