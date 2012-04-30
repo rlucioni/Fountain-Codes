@@ -82,6 +82,8 @@ FILE MANIFEST
     
     lenna.jpg      - image for testing file I/O
 
+    bear.gif       - a gif used for testing file I/O on larger, animated files
+
     sentence.txt   - A text file which contains the sentence "This is a 
                      test." Provided for convenience when testing operations.
 
