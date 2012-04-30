@@ -31,7 +31,7 @@ type metadrop = {number_chunks : int;
 
 
 (* NOTE: A "metadrop" consists of the metadata associated with a particular
- * droplet. This metadata is extracted decoding the seed information in the
+ * droplet. This metadata is extracted by decoding the seed information in the
  * droplet *)
 
 (* a Goblet, used to collect Droplets and reconstruct the original data *)
