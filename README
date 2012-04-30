@@ -40,13 +40,13 @@ FILE MANIFEST
                      to generate multiple samples of transmission;
 		             compile to run from the command line
 
-    distribution.ml- contains implementations of fountain and goblet, with the
-    		         rand_droplet_pieces and get_num_chunks methods overridden
-		             with new PRNG, which generate values according to either
-		             the poisson or normal distributions; the parameters to
-		             these distributions are given as class arguments;
-		             when droplets are generated, the number of pieces XOR'd
-		             into each piece varies based on the distribution and
+    distribution.ml- contains implementations of fountain and goblet, with the 
+                     rand_droplet_pieces and get_num_chunks methods overridden 
+                     with new PRNG, which generate values according to either 
+                     the poisson or normal distributions; the parameters to 
+                     these distributions are given as class arguments; 
+                     when droplets are generated, the number of pieces XOR'd 
+                     into each piece varies based on the distribution and
 		             its parameters
 
     md5test.sh     - used for testing; compiles operations, creates a test file 
