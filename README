@@ -37,8 +37,8 @@ FILE MANIFEST
                      poisson, or normal distribution (see distribution.ml below)
                      then takes additional arguments based on the probability
                      distribution selected; also allows running multiple times
-                     to generate multiple samples of transmission;
-		             compile to run from the command line
+                     to generate multiple samples of transmission; compile to 
+                     run from the command line
 
     distribution.ml- contains implementations of fountain and goblet, with the 
                      rand_droplet_pieces and get_num_chunks methods overridden 
@@ -46,8 +46,8 @@ FILE MANIFEST
                      the poisson or normal distributions; the parameters to 
                      these distributions are given as class arguments; 
                      when droplets are generated, the number of pieces XOR'd 
-                     into each piece varies based on the distribution and
-		             its parameters
+                     into each piece varies based on the distribution and its 
+                     parameters
 
     md5test.sh     - used for testing; compiles operations, creates a test file 
                      with 1000 bytes pulled from /dev/random, runs that file 
