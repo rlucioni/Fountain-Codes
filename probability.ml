@@ -87,7 +87,8 @@ let rec tester lst n : int list =
 let rec stringify lst : string =
   match lst with
     | [] -> ""
-    | hd::tl -> string_of_int hd ^ "," ^ (stringify tl);;
+    | hd::[] -> string_of_int hd
+    | hd::tl -> string_of_int hd ^ ", " ^ (stringify tl);;
 
 print_string ("\nFile length: " ^ (string_of_int ((String.length message) / 
                                                          piece_size)) ^ "\n") ;;

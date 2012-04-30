@@ -17,9 +17,6 @@ object
     
     (* indicates how many extra chars are at the end of the total file *)
     val mutable extra : int
-                         
-    (* this converts the data, total_pieces, and seed into a string *)
-    (*method to_string : string*)
                                  
     (* returns record with data, total_pieces, and seed for use in goblet *)
     method get_contents : droplet_record
