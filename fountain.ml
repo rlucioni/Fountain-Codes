@@ -60,26 +60,26 @@ class lt_fountain (d: string) (ps: int) (bound : int) : fountain =
 object (self)
   (*   type droplet = lt_droplet
    *  we may need some sort of a line like this ! *) 
-    val mutable data           = d
-    val mutable piece_size     = ps
-    val mutable diced_data     = Array.make 1 []
+    val mutable data            = d
+    val mutable piece_size      = ps
+    val mutable diced_data      = Array.make 1 []
 
-    val mutable total_pieces   = 
+    val mutable total_pieces    = 
        let length = String.length d in
        if ((length mod ps) = 0) 
          then (length/ps)
          else ((length/ps) + 1)
     
-    val mutable seed           = self_init (); int 10000
-    val mutable droplet_pieces = 0
-    val mutable extra = 0
+    val mutable seed            = self_init (); int 10000
+    val mutable droplet_pieces  = 0
+    val mutable extra           = 0
 
     initializer
         self#string_to_intlist piece_size data
     
-    method random_seed         = self_init (); seed <- int 10000; init seed
+    method random_seed             = self_init (); seed <- int 10000; init seed
     
-    method rand_droplet_pieces = (int bound) + 1
+    method rand_droplet_pieces     = (int bound) + 1
 
     method update_droplet_pieces i = droplet_pieces <- i
     
