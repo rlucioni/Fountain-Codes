@@ -1,3 +1,5 @@
+(* this file collects droplets and reconstructs the original message *)
+
 open Droplet
 open Random
 exception TODO

@@ -135,7 +135,7 @@ object (self)
          else 
            if piece_size <= 100
              then 60
-             else 40
+             else 10
 
     (* call f with probability (1/p) and g if f is not called *)
     method private inv_probability_or (p:int) (f:unit->'a) (g:unit->'a) : 'a =
